@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="3" passed="3" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2025-07-07T11:10:01 IST" name="Suite" finished-at="2025-07-07T11:18:26 IST" duration-ms="505291">
+    <groups>
+      <group name="Regression">
+        <method signature="TC01_Login_Class_Page.LoginOnCloudConsole()[pri:1, instance:test_Cases_Class.TC01_Login_Class_Page@512d92b]" name="LoginOnCloudConsole" class="test_Cases_Class.TC01_Login_Class_Page"/>
+      </group> <!-- Regression -->
+      <group name="smoke">
+        <method signature="TC01_Login_Class_Page.LoginOnCloudConsole()[pri:1, instance:test_Cases_Class.TC01_Login_Class_Page@512d92b]" name="LoginOnCloudConsole" class="test_Cases_Class.TC01_Login_Class_Page"/>
+      </group> <!-- smoke -->
+    </groups>
+    <test started-at="2025-07-07T11:10:01 IST" name="chrome" finished-at="2025-07-07T11:18:26 IST" duration-ms="505291">
+      <class name="test_Cases_Class.TC04_Download_Agent">
+        <test-method signature="DownLoadCloudAgent()[pri:1, instance:test_Cases_Class.TC04_Download_Agent@475b7792]" started-at="2025-07-07T11:10:08 IST" name="DownLoadCloudAgent" description="Make Sure Cloud Agent Gets download Properly" finished-at="2025-07-07T11:11:49 IST" duration-ms="100647" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- DownLoadCloudAgent -->
+      </class> <!-- test_Cases_Class.TC04_Download_Agent -->
+      <class name="test_Cases_Class.TC01_Login_Class_Page">
+        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:test_Cases_Class.TC01_Login_Class_Page@512d92b]" started-at="2025-07-07T11:10:01 IST" name="setup" finished-at="2025-07-07T11:10:04 IST" duration-ms="2787" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Windows]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[chrome]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="LoginOnCloudConsole()[pri:1, instance:test_Cases_Class.TC01_Login_Class_Page@512d92b]" started-at="2025-07-07T11:10:04 IST" name="LoginOnCloudConsole" description="Ensure that the user is logged in to the Cloud Console." finished-at="2025-07-07T11:10:08 IST" duration-ms="4292" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- LoginOnCloudConsole -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:test_Cases_Class.TC01_Login_Class_Page@512d92b]" started-at="2025-07-07T11:18:26 IST" name="tearDown" finished-at="2025-07-07T11:18:26 IST" duration-ms="368" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- test_Cases_Class.TC01_Login_Class_Page -->
+      <class name="test_Cases_Class.TC03_Install_CloudAgent_OnVbox">
+        <test-method signature="vmStartInstallAgent()[pri:0, instance:test_Cases_Class.TC03_Install_CloudAgent_OnVbox@60afd40d]" started-at="2025-07-07T11:11:49 IST" name="vmStartInstallAgent" finished-at="2025-07-07T11:18:26 IST" duration-ms="397013" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- vmStartInstallAgent -->
+      </class> <!-- test_Cases_Class.TC03_Install_CloudAgent_OnVbox -->
+    </test> <!-- chrome -->
+  </suite> <!-- Suite -->
+</testng-results>

@@ -1,0 +1,13 @@
+{
+  "theme": "STANDARD",
+  "encoding": "utf-8",
+  "protocol": "HTTPS",
+  "timelineEnabled": false,
+  "offlineMode": true,
+  "thumbnailForBase64": false,
+  "documentTitle": "Jai Mata Di Automation",
+  "reportName": "Cloud Console",
+  "timeStampFormat": "dd-MM-yyyy hh:mm:ss",
+  "js": "document.getElementsByClassName('logo')[0].style.display='none';",
+  "css": ".badge-primary{background-color:#fd3259}"
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extentreports>
+  <configuration>
+
+    <!-- Report ka theme set karo: options - STANDARD, DARK -->
+    <theme>STANDARD</theme>
+
+    <!-- Document encoding UTF-8 rakho by default -->
+    <encoding>UTF-8</encoding>
+
+    <!-- Protocol for script and stylesheets: options - HTTP, HTTPS (Default is HTTPS) -->
+    <protocol>HTTPS</protocol>
+
+    <!-- Timeline enable kare ya nahi: true to enable, false to disable -->
+    <timelineEnabled>true</timelineEnabled>
+    
+    <!-- Offline mode ko enable/disable karo: false means report will not work offline -->
+    <enableOfflineMode>false</enableOfflineMode>
+    
+    <!-- Base64 image thumbnails ke liye: true will use thumbnails, false will not -->
+    <thumbnailForBase64>false</thumbnailForBase64>
+
+    <!-- Document title jo browser tab pe dikhai dega -->
+    <documentTitle>Extent Framework</documentTitle>
+
+    <!-- Report ka naam jo report ke top navigation mein dikhega -->
+    <reportName>Build 1</reportName>
+
+    <!-- Timestamp format for displaying date and time -->
+    <timeStampFormat>MMM dd, yyyy HH:mm:ss</timeStampFormat>
+
+    <!-- Custom JavaScript code for manipulating HTML components -->
+    <js>
+      <![CDATA[
+        $(document).ready(function() {
+            document.getElementsByClassName('logo')[0].style.display='none';
+        });
+      ]]>
+    </js>
+
+    <!-- Custom CSS for styling report badges or other elements -->
+    <css>
+      <![CDATA[
+        .badge-primary {background-color: #fd3259;}
+      ]]>
+    </css>
+
+  </configuration>
+</extentreports>
