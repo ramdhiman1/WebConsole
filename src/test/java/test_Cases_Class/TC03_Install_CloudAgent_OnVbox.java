@@ -5,16 +5,16 @@ import java.io.IOException;
 import org.testng.Assert;
 
 import base_Classes.Base_Page;
-import testCasesCode.Install_CloudPro_Vbox;
+import testCasesCode.Install_CloudPro_Vbox_Production;
 
 public class TC03_Install_CloudAgent_OnVbox extends Base_Page {
 
 	@Test
 	public void vmStartInstallAgent() throws InterruptedException, IOException {
-		Install_CloudPro_Vbox iw = new Install_CloudPro_Vbox(driver.get());
+		Install_CloudPro_Vbox_Production iw = new Install_CloudPro_Vbox_Production(driver.get());
 
 		String policyname = "\"D:\\DFCloud\\Downloads\\FWAWebInstaller_Faronics Default.exe\"";
-		iw.renameInstaller(policyname);
+		iw.renameInstaller();
 
 		iw.StartVM();
 		iw.pingVM();

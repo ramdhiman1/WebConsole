@@ -1,6 +1,8 @@
 package base_Classes;
 
 import java.io.File;
+import com.aventstack.extentreports.Status;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
@@ -30,8 +32,13 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -40,6 +47,7 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
+import utilities.ExtentReportManager;
 import utilities.ScreenRecorderUtil;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -61,6 +69,7 @@ public class Base_Page {
 	String formattedDateTime;
 
 	@BeforeTest
+	
 	@Epic("EP001")
 	@Step("Setup WebDriver for browser: {br}")
 	@Severity(SeverityLevel.CRITICAL)
@@ -328,7 +337,54 @@ public class Base_Page {
 		return target.getAbsolutePath(); // Return the full path for the report
 	}   
 	
+	//////////////////////////////////////////////////
+
+	public List<String[]> readExcelData(String filePath, String sheetName) {
+	    List<String[]> dataList = new ArrayList<>();
+
+	    try (FileInputStream fis = new FileInputStream(filePath);
+	         Workbook workbook = new XSSFWorkbook(fis)) {
+
+	        Sheet sheet = workbook.getSheet(sheetName);
+	        int rowCount = sheet.getPhysicalNumberOfRows();
+
+	        for (int i = 1; i < rowCount; i++) {
+	            Row row = sheet.getRow(i);
+	            String url = row.getCell(1).getStringCellValue();        // Column B
+	            String username = row.getCell(2).getStringCellValue();   // Column C
+	            String password = row.getCell(3).getStringCellValue();   // Column D
+
+	            dataList.add(new String[]{url, username, password});
+	        }
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return dataList;
+	}
+
 	
+	// 👇 Add this in your Base_Page class
+	public void logToReport(Status status, String message) {
+	    System.out.println("[LOG] " + message);
+
+	    // ✅ Extent Report
+	    try {
+	        ExtentReportManager.getTest().log(status, message);
+	    } catch (Exception e) {
+	        System.out.println("Extent logging failed: " + e.getMessage());
+	    }
+
+	    // ✅ Allure Report
+	    try {
+	        Allure.step(message);
+	    } catch (Exception e) {
+	        System.out.println("Allure logging failed: " + e.getMessage());
+	    }
+	}
+
+
 
 	// Initialize page elements
 	public void initializeElements(Object page) {
