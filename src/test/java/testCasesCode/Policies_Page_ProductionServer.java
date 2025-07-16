@@ -119,7 +119,7 @@ public class Policies_Page_ProductionServer extends Base_Page {
 	@FindBy(xpath = "//a[@id='SOFTWARE_UPDATER_a']")
 	WebElement ClickOnSUService;
 
-	@FindBy(xpath = "//select[@id='ddSoftwareUpdaterSettings']")
+	@FindBy(xpath = "//select[@id='ddPolicySettingsSoftwareUpdater']")
 	WebElement selectkdropdowhnSU;
 
 	@FindBy(xpath = "//label[@for='chk_5']")

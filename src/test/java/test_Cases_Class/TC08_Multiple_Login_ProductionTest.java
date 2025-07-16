@@ -56,7 +56,7 @@ public class TC08_Multiple_Login_ProductionTest extends Base_Page {
 		dfPolicy.selectDropdownPolicy();
 		dfPolicy.enterPolicyName(randomPolicyName);
 		dfPolicy.EnableDFService();
-		dfPolicy.ClickonDropdwonDF("Enable (Install and use below settings)");
+		dfPolicy.ClickonDropdwonDF("Enable (Install and use below settings)");		
 		dfPolicy.EnableSoftwareUpdater();
 		dfPolicy.ClickonDropdwonSU("Enable (Install and use below settings)");
 		dfPolicy.selectanyapps();		
@@ -68,7 +68,7 @@ public class TC08_Multiple_Login_ProductionTest extends Base_Page {
 		
 		// here Launch The VM and Install the Cloud Products 
 		
-		Install_CloudPro_Vbox_Production iw = new Install_CloudPro_Vbox_Production(driver.get());
+		Install_CloudPro_Vbox_Production iw = new Install_CloudPro_Vbox_Production();
 
         iw.renameInstaller();
         iw.StartVM();
@@ -94,8 +94,8 @@ public class TC08_Multiple_Login_ProductionTest extends Base_Page {
         expectedProducts.put("Imaging", "C:\\Program Files (x86)\\Faronics\\Imaging\\Imaging.exe");
 
         // ✅ Step 2: Wait and Ping after Reboot
-        System.out.println("\n🕒 Waiting for reboot (5 mins)...");
-        Thread.sleep(150000);
+        System.out.println("\n🕒 Waiting for reboot (3 mins)...");
+        Thread.sleep(130000);
         iw.pingVM();
         System.out.println("🕒 Waiting 1 more minute for system load...");
         Thread.sleep(100000);
@@ -125,7 +125,7 @@ public class TC08_Multiple_Login_ProductionTest extends Base_Page {
             }
         }
 
-        // ✅ Summary
+        // ✅ Summary.
         System.out.println("\n📦 Summary Report:");
         System.out.println("➡ Products Installed After Reboot: " + installedAfter);
 
@@ -135,10 +135,17 @@ public class TC08_Multiple_Login_ProductionTest extends Base_Page {
         driver.get().get(p.getProperty("www2computerspage"));
         iw.SearchMachine();
         iw.selectOnlineWorkstation();
-        iw.printAllProductStatuses(10, 23);
+        iw.SearchMachine();
+        iw.printAllProductStatuses();
         iw.selectOnlineWorkstation();
         iw.dfthawedAction();
-        
+        driver.get().get(p.getProperty("www2taskstatuspage"));
+		iw.checkfirestrow1();
+		driver.get().get(p.getProperty("www2computerspage"));
+		iw.SearchMachine();
+        iw.printAllProductStatuses();
+		driver.get().get(p.getProperty("www2applicationpage"));
+		logToReport(Status.INFO, "Navigated to Application Page");
         
         
         getDriver().get(p.getProperty("signouturlwww2"));

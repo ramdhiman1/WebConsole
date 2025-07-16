@@ -12,7 +12,7 @@ public class TC09_Install_Products_VM_ProductionsServer extends Base_Page {
 
     @Test
     public void vmStartInstallAgent() throws InterruptedException, IOException {
-        Install_CloudPro_Vbox_Production iw = new Install_CloudPro_Vbox_Production(driver.get());
+        Install_CloudPro_Vbox_Production iw = new Install_CloudPro_Vbox_Production();
         iw.renameInstaller();
 
         iw.StartVM();

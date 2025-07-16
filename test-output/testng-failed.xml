@@ -3,6 +3,7 @@
 <suite name="Failed suite [DFCloudSuite]" guice-stage="DEVELOPMENT">
   <listeners>
     <listener class-name="utilities.ExtentReportManager"/>
+    <listener class-name="utilities.MyListener"/>
     <listener class-name="utilities.AllureListener"/>
   </listeners>
   <test thread-count="5" name="chrome(failed)">
@@ -11,9 +12,7 @@
     <classes>
       <class name="test_Cases_Class.TC08_Multiple_Login_ProductionTest">
         <methods>
-          <include name="loginWithFirstUser"/>
           <include name="setup"/>
-          <include name="loginWithThirdUser"/>
           <include name="tearDown"/>
           <include name="loginWithSecondUser"/>
         </methods>

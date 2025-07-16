@@ -11,7 +11,7 @@ public class TC03_Install_CloudAgent_OnVbox extends Base_Page {
 
 	@Test
 	public void vmStartInstallAgent() throws InterruptedException, IOException {
-		Install_CloudPro_Vbox_Production iw = new Install_CloudPro_Vbox_Production(driver.get());
+		Install_CloudPro_Vbox_Production iw = new Install_CloudPro_Vbox_Production();
 
 		String policyname = "\"D:\\DFCloud\\Downloads\\FWAWebInstaller_Faronics Default.exe\"";
 		iw.renameInstaller();

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -12,13 +13,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import base_Classes.Base_Page;
 
 public class Install_CloudPro_Vbox_Production extends Base_Page {
 
-	public Install_CloudPro_Vbox_Production(WebDriver driver) {
+	public Install_CloudPro_Vbox_Production() {
 		super();
+		initializeElements(this);
+		wait = new WebDriverWait(driver.get(), Duration.ofSeconds(15));
 	}
 
 	String remoteHost = "192.168.30.176";
@@ -310,62 +314,73 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 		}
 		
 		
-		public void printAllProductStatuses(int startColumn, int endColumn) {
-		    int retryCount = 0;
-		    int maxRetries = 30;
-		    boolean machineFound = false;
+		public void printAllProductStatuses() throws InterruptedException {
+			int retryCount = 0;
+			int maxRetries = 5;
+			boolean onlineMachineFound = false;
 
-		    while (retryCount < maxRetries && !machineFound) {
-		        List<WebElement> rowData = driver.get()
-		                .findElements(By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr"));
+			while (retryCount < maxRetries && !onlineMachineFound) {
+				List<WebElement> rowData = driver.get().findElements(
+						By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr"));
 
-		        for (WebElement row : rowData) {
-		            WebElement policyName = row.findElement(By.xpath(".//td[4]"));
-		            WebElement compStatus = row.findElement(By.xpath(".//td[5]"));
+				for (WebElement row : rowData) {
+					WebElement compStatus = row.findElement(By.xpath(".//td[5]"));
 
-		            if (remoteMachineName != null && policyName.getText().equals(remoteMachineName)) {
-		                System.out.println("✅ Found machine: " + remoteMachineName);
+					if (compStatus.getText().equalsIgnoreCase("online")) {
+						WebElement titleElement = row.findElement(By.xpath(".//td[2]//img"));
+						String titleAttribute = titleElement.getAttribute("title");
 
-		                String machineStatus = compStatus.getText();
-		                if (machineStatus.equalsIgnoreCase("Online")) {
-		                    System.out.println("🔵 Machine is Online");
+						if ("Cloud Agent".equalsIgnoreCase(titleAttribute)) {
+							// ✅ Select the machine
+							WebElement checkbox = row.findElement(By.xpath(".//td[1]"));
+							checkbox.click();
 
-		                    // ✅ Loop from column 10 to 23
-		                    for (int col = startColumn; col <= endColumn; col++) {
-		                        try {
-		                            WebElement statusElement = row.findElement(By.xpath(".//td[" + col + "]//div"));
-		                            String title = statusElement.getAttribute("title");
-		                            System.out.println("🧪 Column " + col + " → Status: " + (title != null ? title : "No Title Attribute"));
-		                        } catch (Exception e) {
-		                            System.out.println("⚠️ Column " + col + " not found or no <div> present.");
-		                        }
-		                    }
+							onlineMachineFound = true;
 
-		                    machineFound = true;
-		                    break;
-		                } else {
-		                    System.out.println("⚠️ Machine is found but not online. Status: " + machineStatus);
-		                }
-		            }
-		        }
+							// ✅ Get all headers (column names)
+							List<WebElement> headers = driver.get().findElements(
+									By.xpath("//tr[@class='dx-row dx-column-lines dx-header-row']//td"));
 
-		        if (!machineFound) {
-		            System.out.println("⏳ Retrying in 20 seconds...");
-		            try {
-		                Thread.sleep(20000);
-		            } catch (InterruptedException e) {
-		                e.printStackTrace();
-		            }
+							System.out.println("\n📊 Product Status (With Column Names):");
 
-		            driver.get().navigate().refresh();
-		            retryCount++;
-		        }
-		    }
+							// ✅ Loop from column 10 to 23
+							for (int col = 9; col <= 22; col++) {
+								try {
+									// Header name
+									String headerName = headers.get(col - 1).getText().trim(); // index is 0-based
+									
+									// Product status title from row
+									WebElement productStatusElement = row.findElement(By.xpath(".//td[" + col + "]//div"));
+									String productTitle = productStatusElement.getAttribute("title");
 
-		    if (!machineFound) {
-		        System.out.println("❌ Machine not found online after " + maxRetries + " retries.");
-		    }
+									System.out.println("🔹 " + headerName + ": " + productTitle);
+								} catch (Exception e) {
+									System.out.println("❌ Column " + col + ": Header/Status not found.");
+								}
+							}
+
+							break;
+						}
+					}
+				}
+
+				if (!onlineMachineFound) {
+					System.out.println("❗ No online machine with 'Cloud Agent' found. Retrying attempt " + (retryCount + 1) + "...");
+					Thread.sleep(20000);
+					driver.get().navigate().refresh();
+					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+							By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr")));
+					retryCount++;
+				}
+			}
+
+			if (onlineMachineFound) {
+				System.out.println("✅ Online machine selected and product statuses printed.");
+			} else {
+				System.out.println("❌ Max retries reached. No suitable online machine found.");
+			}
 		}
+
 		
 		
 		//Now Reboot Thawed Machine
