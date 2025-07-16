@@ -26,7 +26,7 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 	}
 
 	String remoteHost = "192.168.30.176";
-	String remoteMachineName= "192.168.30.176";
+	String remoteMachineName = "192.168.30.176";
 	String vmUser = "Administrator";
 	String vmPassword = "aloha";
 	String psExecPath = "d:/DFCloud/Downloads/PSTools/PsExec64.exe";
@@ -81,24 +81,21 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 
 	// Step 3: Copy installer files to remote VM using PsExec
 	public void copyInstallerUsingPsExec() throws IOException, InterruptedException {
-	/*	String[] copyCommand = { "cmd.exe", "/C", psExecPath, "\\\\" + remoteHost, "-u", vmUser, "-p", vmPassword, "-s",
-				"cmd", "/c", "\"net use x: \\\\192.168.30.177\\d\\dfcloud\\downloads /user:Administrator aloha1 && "
-						+ "copy x:\\installer.exe e:\\ && copy x:\\runinstaller.bat e:\\ && net use x: /delete\"" }; */
-		
-		String[] copyCommand = {
-				"cmd.exe", "/C",
-				psExecPath,
-				"\\\\" + remoteHost,
-				"-u", vmUser,
-				"-p", vmPassword,
-				"-s",
+		/*
+		 * String[] copyCommand = { "cmd.exe", "/C", psExecPath,
+		 * "\\\\" + remoteHost, "-u", vmUser, "-p", vmPassword, "-s", "cmd", "/c",
+		 * "\"net use x: \\\\192.168.30.177\\d\\dfcloud\\downloads /user:Administrator aloha1 && "
+		 * +
+		 * "copy x:\\installer.exe e:\\ && copy x:\\runinstaller.bat e:\\ && net use x: /delete\""
+		 * };
+		 */
+
+		String[] copyCommand = { "cmd.exe", "/C", psExecPath, "\\\\" + remoteHost, "-u", vmUser, "-p", vmPassword, "-s",
 				"cmd", "/c",
-				"\"net use x: \\\\192.168.30.177\\d\\dfcloud\\downloads /user:Administrator aloha1 && " +
-				"copy x:\\installer.exe e:\\ && " +
-				"copy x:\\runinstaller.bat e:\\ && " +
-				"del x:\\installer.exe && " +  // ✅ This line deletes the installer
-				"net use x: /delete\""
-			};
+				"\"net use x: \\\\192.168.30.177\\d\\dfcloud\\downloads /user:Administrator aloha1 && "
+						+ "copy x:\\installer.exe e:\\ && " + "copy x:\\runinstaller.bat e:\\ && "
+						+ "del x:\\installer.exe && " + // ✅ This line deletes the installer
+						"net use x: /delete\"" };
 
 		System.out.println("📂 Executing file copy via PsExec...");
 		Process process = new ProcessBuilder(copyCommand).start();
@@ -107,83 +104,74 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 	}
 
 	// Step 4: Run installer batch file remotely via PsExec
-/*	public void installApplication() throws IOException, InterruptedException {
-		String[] runInstallerCmd = { "cmd.exe", "/C", psExecPath, "\\\\" + remoteHost, "-u", vmUser, "-p", vmPassword,
-				"-s", "-d", "e:\\runinstaller.bat" };
+	/*
+	 * public void installApplication() throws IOException, InterruptedException {
+	 * String[] runInstallerCmd = { "cmd.exe", "/C", psExecPath,
+	 * "\\\\" + remoteHost, "-u", vmUser, "-p", vmPassword, "-s", "-d",
+	 * "e:\\runinstaller.bat" };
+	 * 
+	 * System.out.println("🚀 Executing PsExec to run e:\\runinstaller.bat...");
+	 * Process process = new ProcessBuilder(runInstallerCmd).start();
+	 * printProcessOutput(process); process.waitFor();
+	 */
 
-		System.out.println("🚀 Executing PsExec to run e:\\runinstaller.bat...");
-		Process process = new ProcessBuilder(runInstallerCmd).start();
-		printProcessOutput(process);
-		process.waitFor();  */
-	
-	
-	
 	// Step 4: Run installer batch file remotely via PsExec
 	public void installApplication() throws IOException, InterruptedException {
-	    String command = psExecPath + " \\\\" + remoteHost +
-	        " -u " + vmUser + " -p " + vmPassword + " -s -i 1 cmd /c e:\\runinstaller.bat";
+		String command = psExecPath + " \\\\" + remoteHost + " -u " + vmUser + " -p " + vmPassword
+				+ " -s -i 1 cmd /c e:\\runinstaller.bat";
 
-	    System.out.println("🚀 Executing PsExec to run e:\\runinstaller.bat...");
-	    ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/C", command);
-	    processBuilder.redirectErrorStream(true);
-	    Process process = processBuilder.start();
-	    printProcessOutput(process);
-	    process.waitFor();
+		System.out.println("🚀 Executing PsExec to run e:\\runinstaller.bat...");
+		ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/C", command);
+		processBuilder.redirectErrorStream(true);
+		Process process = processBuilder.start();
+		printProcessOutput(process);
+		process.waitFor();
 	}
-
 
 	// Optional: Rename installer file before copying if needed
-/*	public void renameInstaller(String policyname) {
-		String renamefile = "ren " + policyname + " installer.exe";
-		String[] command = { "cmd.exe", "/C", renamefile };
-		System.out.println("🔧 Renaming installer file...");
-		try {
-			Process process = new ProcessBuilder(command).start();
-			process.waitFor();
-		} catch (Exception e) {
-			e.printStackTrace();
+	/*
+	 * public void renameInstaller(String policyname) { String renamefile = "ren " +
+	 * policyname + " installer.exe"; String[] command = { "cmd.exe", "/C",
+	 * renamefile }; System.out.println("🔧 Renaming installer file..."); try {
+	 * Process process = new ProcessBuilder(command).start(); process.waitFor(); }
+	 * catch (Exception e) { e.printStackTrace(); } }
+	 */
+
+	public void renameInstaller() {
+		String folderPath = "D:\\DFCloud\\Downloads";
+		String prefix = "FWAWebInstaller";
+
+		File folder = new File(folderPath);
+
+		if (!folder.exists() || !folder.isDirectory()) {
+			System.out.println("❌ Folder does not exist: " + folderPath);
+			return;
+		}
+
+		// Find the file that starts with "FWAWebInstaller"
+		File[] matchingFiles = folder.listFiles((dir, name) -> name.startsWith(prefix) && name.endsWith(".exe"));
+
+		if (matchingFiles != null && matchingFiles.length > 0) {
+			File originalFile = matchingFiles[0]; // Take the first match
+			File renamedFile = new File(folderPath + File.separator + "installer.exe");
+
+			if (renamedFile.exists()) {
+				System.out.println("⚠️ installer.exe already exists. Deleting it...");
+				renamedFile.delete();
+			}
+
+			boolean success = originalFile.renameTo(renamedFile);
+
+			if (success) {
+				System.out.println("✅ Renamed '" + originalFile.getName() + "' to 'installer.exe'");
+			} else {
+				System.out.println("❌ Failed to rename file: " + originalFile.getName());
+			}
+		} else {
+			System.out.println("❌ No file found starting with '" + prefix + "' in: " + folderPath);
 		}
 	}
-*/
-	
-	public void renameInstaller() {
-	    String folderPath = "D:\\DFCloud\\Downloads";
-	    String prefix = "FWAWebInstaller";
-	    
-	    File folder = new File(folderPath);
 
-	    if (!folder.exists() || !folder.isDirectory()) {
-	        System.out.println("❌ Folder does not exist: " + folderPath);
-	        return;
-	    }
-
-	    // Find the file that starts with "FWAWebInstaller"
-	    File[] matchingFiles = folder.listFiles((dir, name) -> name.startsWith(prefix) && name.endsWith(".exe"));
-
-	    if (matchingFiles != null && matchingFiles.length > 0) {
-	        File originalFile = matchingFiles[0];  // Take the first match
-	        File renamedFile = new File(folderPath + File.separator + "installer.exe");
-
-	        if (renamedFile.exists()) {
-	            System.out.println("⚠️ installer.exe already exists. Deleting it...");
-	            renamedFile.delete();
-	        }
-
-	        boolean success = originalFile.renameTo(renamedFile);
-
-	        if (success) {
-	            System.out.println("✅ Renamed '" + originalFile.getName() + "' to 'installer.exe'");
-	        } else {
-	            System.out.println("❌ Failed to rename file: " + originalFile.getName());
-	        }
-	    } else {
-	        System.out.println("❌ No file found starting with '" + prefix + "' in: " + folderPath);
-	    }
-	}
-
-	
-	
-	
 	// NEW: Check if a file exists on remote VM using PsExec
 	public boolean isFileExists(String filePath) {
 		try {
@@ -240,173 +228,206 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 			System.out.println("Actions: " + s);
 		}
 	}
-	
+
 	// ✅ Now We are on Computers Page, so search installed machine
-		@FindBy(xpath = "//div[@aria-label='Search in data grid']//input[@role='textbox']")
-		WebElement clickonSearchbox;
+	@FindBy(xpath = "//div[@aria-label='Search in data grid']//input[@role='textbox']")
+	WebElement clickonSearchbox;
 
-		public void SearchMachine() {
-			wait.until(ExpectedConditions.visibilityOf(clickonSearchbox)).clear();
-			clickonSearchbox.click();
-			clickonSearchbox.sendKeys(remoteMachineName); // ✅ Using the global variable
-		}
-		
- //Now check Machine is Online / offline 
-		
-		public void selectOnlineWorkstation() throws InterruptedException {
-			int retryCount = 0;
-			int maxRetries = 10;
-			boolean onlineMachineFound = false;
+	public void SearchMachine() {
+		wait.until(ExpectedConditions.visibilityOf(clickonSearchbox)).clear();
+		clickonSearchbox.click();
+		clickonSearchbox.sendKeys(remoteMachineName); // ✅ Using the global variable
+	}
 
-			while (retryCount < maxRetries && !onlineMachineFound) {
-				// Get all rows in the table
-				List<WebElement> rowData = driver.get()
-						.findElements(By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr"));
+	// Now check Machine is Online / offline
 
-				for (WebElement row : rowData) {
-					// Get the status from the 5th column (Online/Offline)
-					WebElement compStatus = row.findElement(By.xpath(".//td[5]"));
+	public void selectOnlineWorkstation() throws InterruptedException {
+		int retryCount = 0;
+		int maxRetries = 10;
+		boolean onlineMachineFound = false;
 
-					// Check if the machine is online
-					if (compStatus.getText().equalsIgnoreCase("online")) {
-						// Get the title from the 2nd column
-						WebElement titleElement = row.findElement(By.xpath(".//td[2]//img"));
-						String titleAttribute = titleElement.getAttribute("title");
+		while (retryCount < maxRetries && !onlineMachineFound) {
+			// Get all rows in the table
+			List<WebElement> rowData = driver.get()
+					.findElements(By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr"));
 
-						// Check if the title is "Cloud Agent"
-						if ("Cloud Agent".equalsIgnoreCase(titleAttribute)) {
+			for (WebElement row : rowData) {
+				// Get the status from the 5th column (Online/Offline)
+				WebElement compStatus = row.findElement(By.xpath(".//td[5]"));
 
-							// Find the checkbox in the first column and select it
-							WebElement checkbox = row.findElement(By.xpath(".//td[1]"));
-							checkbox.click(); // Click the Online checkbox to select the machine
+				// Check if the machine is online
+				if (compStatus.getText().equalsIgnoreCase("online")) {
+					// Get the title from the 2nd column
+					WebElement titleElement = row.findElement(By.xpath(".//td[2]//img"));
+					String titleAttribute = titleElement.getAttribute("title");
 
-							onlineMachineFound = true; // Mark that the machine was found
-							break; // Break out of the loop once machine is found
-						}
+					// Check if the title is "Cloud Agent"
+					if ("Cloud Agent".equalsIgnoreCase(titleAttribute)) {
+
+						// Find the checkbox in the first column and select it
+						WebElement checkbox = row.findElement(By.xpath(".//td[1]"));
+						checkbox.click(); // Click the Online checkbox to select the machine
+
+						onlineMachineFound = true; // Mark that the machine was found
+						break; // Break out of the loop once machine is found
 					}
 				}
-
-				if (!onlineMachineFound) {
-					// Retry if no online machine with "Cloud Agent" found
-					System.out.println("No online machine with 'Cloud Agent' title found, retrying attempt "
-							+ (retryCount + 1) + "...");
-					Thread.sleep(20000); // Wait for 5 seconds before retrying
-					driver.get().navigate().refresh(); // Refresh the page
-					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-							By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr"))); // Wait for the table
-																										// to reload
-					retryCount++;
-				}
 			}
 
-			if (onlineMachineFound) {
-				// Continue with the rest of your test here
-				System.out.println("Online machine selected successfully. Continuing with further tests...");
-
-				// TODO: Add the next steps of your test after selecting the online machine
-				// Example: click a button, perform another action, etc.
-
-			} else {
-				System.out.println("Max retries reached. No online machine with 'Cloud Agent' title found.");
-				// Handle what to do if no machine was found after max retries
-				// For example, you could fail the test or exit the process.
+			if (!onlineMachineFound) {
+				// Retry if no online machine with "Cloud Agent" found
+				System.out.println("No online machine with 'Cloud Agent' title found, retrying attempt "
+						+ (retryCount + 1) + "...");
+				Thread.sleep(20000); // Wait for 5 seconds before retrying
+				driver.get().navigate().refresh(); // Refresh the page
+				wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+						By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr"))); // Wait for the table
+																									// to reload
+				retryCount++;
 			}
 		}
-		
-		
-		public void printAllProductStatuses() throws InterruptedException {
-			int retryCount = 0;
-			int maxRetries = 5;
-			boolean onlineMachineFound = false;
 
-			while (retryCount < maxRetries && !onlineMachineFound) {
-				List<WebElement> rowData = driver.get().findElements(
-						By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr"));
+		if (onlineMachineFound) {
+			// Continue with the rest of your test here
+			System.out.println("Online machine selected successfully. Continuing with further tests...");
 
-				for (WebElement row : rowData) {
-					WebElement compStatus = row.findElement(By.xpath(".//td[5]"));
+			// TODO: Add the next steps of your test after selecting the online machine
+			// Example: click a button, perform another action, etc.
 
-					if (compStatus.getText().equalsIgnoreCase("online")) {
-						WebElement titleElement = row.findElement(By.xpath(".//td[2]//img"));
-						String titleAttribute = titleElement.getAttribute("title");
+		} else {
+			System.out.println("Max retries reached. No online machine with 'Cloud Agent' title found.");
+			// Handle what to do if no machine was found after max retries
+			// For example, you could fail the test or exit the process.
+		}
+	}
 
-						if ("Cloud Agent".equalsIgnoreCase(titleAttribute)) {
-							// ✅ Select the machine
-							WebElement checkbox = row.findElement(By.xpath(".//td[1]"));
-							checkbox.click();
+	public void printAllProductStatuses() throws InterruptedException {
+		int retryCount = 0;
+		int maxRetries = 5;
+		boolean onlineMachineFound = false;
 
-							onlineMachineFound = true;
+		while (retryCount < maxRetries && !onlineMachineFound) {
+			List<WebElement> rowData = driver.get()
+					.findElements(By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr"));
 
-							// ✅ Get all headers (column names)
-							List<WebElement> headers = driver.get().findElements(
-									By.xpath("//tr[@class='dx-row dx-column-lines dx-header-row']//td"));
+			for (WebElement row : rowData) {
+				WebElement compStatus = row.findElement(By.xpath(".//td[5]"));
 
-							System.out.println("\n📊 Product Status (With Column Names):");
+				if (compStatus.getText().equalsIgnoreCase("online")) {
+					WebElement titleElement = row.findElement(By.xpath(".//td[2]//img"));
+					String titleAttribute = titleElement.getAttribute("title");
 
-							// ✅ Loop from column 10 to 23
-							for (int col = 9; col <= 22; col++) {
-								try {
-									// Header name
-									String headerName = headers.get(col - 1).getText().trim(); // index is 0-based
-									
-									// Product status title from row
-									WebElement productStatusElement = row.findElement(By.xpath(".//td[" + col + "]//div"));
-									String productTitle = productStatusElement.getAttribute("title");
+					if ("Cloud Agent".equalsIgnoreCase(titleAttribute)) {
+						// ✅ Select the machine
+						WebElement checkbox = row.findElement(By.xpath(".//td[1]"));
+						checkbox.click();
 
-									System.out.println("🔹 " + headerName + ": " + productTitle);
-								} catch (Exception e) {
-									System.out.println("❌ Column " + col + ": Header/Status not found.");
+						onlineMachineFound = true;
+
+						// ✅ Get all headers (column names)
+						List<WebElement> headers = driver.get()
+								.findElements(By.xpath("//tr[@class='dx-row dx-column-lines dx-header-row']//td"));
+
+						System.out.println("\n📊 Product Status (With Column Names):");
+
+						// ✅ Loop from column 10 to 23
+						for (int col = 10; col <= 23; col++) {
+							try {
+								WebElement headerCell = headers.get(col - 1); // index is 0-based
+								String headerName = headerCell.getText().trim();
+
+								if (headerName.isEmpty()) {
+									headerName = headerCell.getAttribute("title"); // fallback to tooltip
 								}
-							}
+								if (headerName == null || headerName.isEmpty()) {
+									headerName = "Column " + col;
+								}
 
-							break;
+								// Product status title from row
+								WebElement productStatusElement = row.findElement(By.xpath(".//td[" + col + "]//div"));
+								String productTitle = productStatusElement.getAttribute("title");
+
+								System.out.println("🔹 " + headerName + ": " + productTitle);
+							} catch (Exception e) {
+								System.out.println("❌ Column " + col + ": Header/Status not found.");
+							}
 						}
+
+						break;
 					}
 				}
-
-				if (!onlineMachineFound) {
-					System.out.println("❗ No online machine with 'Cloud Agent' found. Retrying attempt " + (retryCount + 1) + "...");
-					Thread.sleep(20000);
-					driver.get().navigate().refresh();
-					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-							By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr")));
-					retryCount++;
-				}
 			}
 
-			if (onlineMachineFound) {
-				System.out.println("✅ Online machine selected and product statuses printed.");
-			} else {
-				System.out.println("❌ Max retries reached. No suitable online machine found.");
+			if (!onlineMachineFound) {
+				System.out.println(
+						"❗ No online machine with 'Cloud Agent' found. Retrying attempt " + (retryCount + 1) + "...");
+				Thread.sleep(20000);
+				driver.get().navigate().refresh();
+				wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+						By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr")));
+				retryCount++;
 			}
 		}
 
-		
-		
-		//Now Reboot Thawed Machine
-		
-		
-		@FindBy(xpath="//a[normalize-space()='Deep Freeze']")
-		  WebElement dfdropdown;
-		  @FindBy(xpath="//a[@id='aDeepFreeze_Frozen']")
-		  WebElement dffrozenaction;
-		  @FindBy(xpath="//a[@id='aDeepFreeze_Thawed']")
-		  WebElement dfthawedaction;
-		  @FindBy(xpath="//input[@id='btnRebootThawedOk']")
-		  WebElement btnthawlockaction;
-		  @FindBy(xpath="//h4[@id='dvheader_text']")
-		  WebElement popupmessage;
-		public void dfthawedAction()
-		{
-			dfdropdown.click();
-			dfthawedaction.click();
-			wait.until(ExpectedConditions.visibilityOf(popupmessage));
-			btnthawlockaction.click();
-			wait.until(ExpectedConditions.invisibilityOf(popupmessage));
-			System.out.println("DF Reboot thawed action executed successfully");
-			
+		if (onlineMachineFound) {
+			System.out.println("✅ Online machine selected and product statuses printed.");
+		} else {
+			System.out.println("❌ Max retries reached. No suitable online machine found.");
 		}
-		
-		
-		
+	}
+
+	// Now Reboot Thawed Machine
+
+	@FindBy(xpath = "//a[normalize-space()='Deep Freeze']")
+	WebElement dfdropdown;
+	@FindBy(xpath = "//a[@id='aDeepFreeze_Frozen']")
+	WebElement dffrozenaction;
+	@FindBy(xpath = "//a[@id='aDeepFreeze_Thawed']")
+	WebElement dfthawedaction;
+	@FindBy(xpath = "//input[@id='btnRebootThawedOk']")
+	WebElement btnthawlockaction;
+	@FindBy(xpath = "//h4[@id='dvheader_text']")
+	WebElement popupmessage;
+
+	public void dfthawedAction() {
+		dfdropdown.click();
+		dfthawedaction.click();
+		wait.until(ExpectedConditions.visibilityOf(popupmessage));
+		btnthawlockaction.click();
+		wait.until(ExpectedConditions.invisibilityOf(popupmessage));
+		System.out.println("DF Reboot thawed action executed successfully");
+
+	}
+	
+	//Now Uninstall the Cloud Agent 
+	
+	@FindBy(xpath="//div[@class='Maintainance-Comp listImage']")
+	  WebElement mmdropdown;
+	
+	@FindBy(xpath="//a[@id='UninstallCA_Computers']")
+	  WebElement clickonUninstallCA;
+	@FindBy(xpath="//input[@id='btnUninstallCAYes']")
+	  WebElement clickonYesBtn;
+	@FindBy(xpath="//span[@id='SpanServiceMsgbox']")
+	  WebElement actionmessage;
+	
+	
+	
+	
+	
+	public void UninstallCloudAgent()
+	  {
+		  wait.until(ExpectedConditions.visibilityOf(mmdropdown)).click();
+		  wait.until(ExpectedConditions.visibilityOf(clickonUninstallCA)).click();
+		  wait.until(ExpectedConditions.visibilityOf(clickonYesBtn)).click();
+		  wait.until(ExpectedConditions.visibilityOf(actionmessage));
+		  if (actionmessage.getText().contains("Uninstalling Cloud Agent"))
+		  {
+			  wait.until(ExpectedConditions.invisibilityOf(actionmessage));
+		  }
+		  System.out.println("Uninstalling Cloud Agent action executed successfully");
+		  
+	  }
+	
+
 }

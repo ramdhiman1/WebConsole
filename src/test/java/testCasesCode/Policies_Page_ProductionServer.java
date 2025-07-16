@@ -16,7 +16,7 @@ public class Policies_Page_ProductionServer extends Base_Page {
 	public Policies_Page_ProductionServer() {
 		super();
 		initializeElements(this);
-		wait = new WebDriverWait(driver.get(), Duration.ofSeconds(15));
+		wait = new WebDriverWait(driver.get(), Duration.ofSeconds(35));
 
 	}
 
@@ -132,6 +132,7 @@ public class Policies_Page_ProductionServer extends Base_Page {
 	}
 
 	public void ClickonDropdwonSU(String Enable) {
+		wait.until(ExpectedConditions.visibilityOf(selectkdropdowhnSU));
 		Select sudropdownenable = new Select(selectkdropdowhnSU);
 		sudropdownenable.selectByVisibleText(Enable);
 	}

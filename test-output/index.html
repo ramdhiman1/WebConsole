@@ -25,7 +25,7 @@
       <span class="top-banner-title-font">Test results</span>
       <button id="button" class="button">Switch Retro Theme</button> <!-- button -->
       <br/>
-      <span class="top-banner-font-1">1 suite, 1 failed test</span>
+      <span class="top-banner-font-1">1 suite</span>
     </div> <!-- top-banner-root -->
     <div class="navigator-root">
       <div class="navigator-suite-header">
@@ -39,7 +39,7 @@
         <div class="rounded-window">
           <div class="suite-header light-rounded-window-top">
             <a href="#" panel-name="suite-DFCloudSuite" class="navigator-link">
-              <span class="suite-name border-failed">DFCloudSuite</span>
+              <span class="suite-name border-passed">DFCloudSuite</span>
             </a> <!-- navigator-link -->
           </div> <!-- suite-header light-rounded-window-top -->
           <div class="navigator-suite-content">
@@ -92,21 +92,7 @@
               <div class="suite-section-content">
                 <ul>
                   <li>
-                    <span class="method-stats">3 methods, 1 failed,   2 passed</span>
-                  </li>
-                  <li>
-                    <span class="method-list-title failed">Failed methods</span>
-                    <span class="show-or-hide-methods failed">
-                      <a href="#" panel-name="suite-DFCloudSuite" class="hide-methods failed suite-DFCloudSuite"> (hide)</a> <!-- hide-methods failed suite-DFCloudSuite -->
-                      <a href="#" panel-name="suite-DFCloudSuite" class="show-methods failed suite-DFCloudSuite"> (show)</a> <!-- show-methods failed suite-DFCloudSuite -->
-                    </span>
-                    <div class="method-list-content failed suite-DFCloudSuite">
-                      <span>
-                        <img src="failed.png" width="3%"/>
-                        <a href="#" panel-name="suite-DFCloudSuite" title="test_Cases_Class.TC08_Multiple_Login_ProductionTest" class="method navigator-link" hash-for-method="loginWithSecondUser">loginWithSecondUser</a> <!-- method navigator-link -->
-                      </span>
-                      <br/>
-                    </div> <!-- method-list-content failed suite-DFCloudSuite -->
+                    <span class="method-stats">1 method,   1 passed</span>
                   </li>
                   <li>
                     <span class="method-list-title passed">Passed methods</span>
@@ -115,11 +101,6 @@
                       <a href="#" panel-name="suite-DFCloudSuite" class="show-methods passed suite-DFCloudSuite"> (show)</a> <!-- show-methods passed suite-DFCloudSuite -->
                     </span>
                     <div class="method-list-content passed suite-DFCloudSuite">
-                      <span>
-                        <img src="passed.png" width="3%"/>
-                        <a href="#" panel-name="suite-DFCloudSuite" title="test_Cases_Class.TC08_Multiple_Login_ProductionTest" class="method navigator-link" hash-for-method="loginWithFirstUser">loginWithFirstUser</a> <!-- method navigator-link -->
-                      </span>
-                      <br/>
                       <span>
                         <img src="passed.png" width="3%"/>
                         <a href="#" panel-name="suite-DFCloudSuite" title="test_Cases_Class.TC08_Multiple_Login_ProductionTest" class="method navigator-link" hash-for-method="loginWithThirdUser">loginWithThirdUser</a> <!-- method navigator-link -->
@@ -137,74 +118,12 @@
     <div class="wrapper">
       <div class="main-panel-root">
         <div panel-name="suite-DFCloudSuite" class="panel DFCloudSuite">
-          <div class="suite-DFCloudSuite-class-failed">
-            <div class="main-panel-header rounded-window-top">
-              <img src="failed.png"/>
-              <span class="class-name">test_Cases_Class.TC08_Multiple_Login_ProductionTest</span>
-            </div> <!-- main-panel-header rounded-window-top -->
-            <div class="main-panel-content rounded-window-bottom">
-              <div class="method">
-                <div class="method-content">
-                  <a name="loginWithSecondUser">
-                  </a> <!-- loginWithSecondUser -->
-                  <span class="method-name">loginWithSecondUser</span>
-                  <div class="stack-trace">org.openqa.selenium.TimeoutException: Expected condition failed: waiting for visibility of Proxy element for: DefaultElementLocator &apos;By.xpath: //a[@id=&apos;aAdd_Policy&apos;]&apos; (tried for 15 second(s) with 500 milliseconds interval)
-	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
-	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
-	at testCasesCode.Policies_Page_ProductionServer.clickAddPolicyButton(Policies_Page_ProductionServer.java:43)
-	at test_Cases_Class.TC08_Multiple_Login_ProductionTest.loginWithSecondUser(TC08_Multiple_Login_ProductionTest.java:181)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-Caused by: org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//a[@id=&apos;aAdd_Policy&apos;]&quot;}
-  (Session info: chrome=138.0.7204.101)
-For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
-Build info: version: &apos;4.34.0&apos;, revision: &apos;707dcb4246*&apos;
-System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;21.0.7&apos;
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [2bd573a3712e1673ccbaed3ee714c58a, findElement {value=//a[@id=&apos;aAdd_Policy&apos;], using=xpath}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.101, chrome: {chromedriverVersion: 138.0.7204.157 (e533e98b126..., userDataDir: C:\Windows\SystemTemp\scope...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:59967}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:59967/devtoo..., se:cdpVersion: 138.0.7204.101, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: 2bd573a3712e1673ccbaed3ee714c58a
-	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:167)
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:138)
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
-	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:215)
-	at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:216)
-	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:174)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:544)
-	at org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:165)
-	at org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:59)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:367)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:361)
-	at org.openqa.selenium.support.pagefactory.DefaultElementLocator.findElement(DefaultElementLocator.java:68)
-	at org.openqa.selenium.support.pagefactory.internal.LocatingElementHandler.invoke(LocatingElementHandler.java:38)
-	at jdk.proxy2/jdk.proxy2.$Proxy41.isDisplayed(Unknown Source)
-	at org.openqa.selenium.support.ui.ExpectedConditions.elementIfVisible(ExpectedConditions.java:304)
-	at org.openqa.selenium.support.ui.ExpectedConditions$10.apply(ExpectedConditions.java:290)
-	at org.openqa.selenium.support.ui.ExpectedConditions$10.apply(ExpectedConditions.java:287)
-	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:203)
-	... 28 more
-... Removed 28 stack frames
-</div> <!-- stack-trace -->
-                  <em>
-(Log in to the Cloud Console on 'www9' to check machine status, install products, and verify their status.)                  </em>
-                </div> <!-- method-content -->
-              </div> <!-- method -->
-            </div> <!-- main-panel-content rounded-window-bottom -->
-          </div> <!-- suite-DFCloudSuite-class-failed -->
           <div class="suite-DFCloudSuite-class-passed">
             <div class="main-panel-header rounded-window-top">
               <img src="passed.png"/>
               <span class="class-name">test_Cases_Class.TC08_Multiple_Login_ProductionTest</span>
             </div> <!-- main-panel-header rounded-window-top -->
             <div class="main-panel-content rounded-window-bottom">
-              <div class="method">
-                <div class="method-content">
-                  <a name="loginWithFirstUser">
-                  </a> <!-- loginWithFirstUser -->
-                  <span class="method-name">loginWithFirstUser</span>
-                  <em>
-(Log in to the Cloud Console on 'www2' to check machine status, install products, and verify their status.)                  </em>
-                </div> <!-- method-content -->
-              </div> <!-- method -->
               <div class="method">
                 <div class="method-content">
                   <a name="loginWithThirdUser">
@@ -275,24 +194,16 @@ data.addColumn('number', 'Number');
 data.addColumn('string', 'Method');
 data.addColumn('string', 'Class');
 data.addColumn('number', 'Time (ms)');
-data.addRows(3);
+data.addRows(1);
 data.setCell(0, 0, 0)
-data.setCell(0, 1, 'loginWithFirstUser')
+data.setCell(0, 1, 'loginWithThirdUser')
 data.setCell(0, 2, 'test_Cases_Class.TC08_Multiple_Login_ProductionTest')
-data.setCell(0, 3, 862047);
-data.setCell(1, 0, 1)
-data.setCell(1, 1, 'loginWithSecondUser')
-data.setCell(1, 2, 'test_Cases_Class.TC08_Multiple_Login_ProductionTest')
-data.setCell(1, 3, 51702);
-data.setCell(2, 0, 2)
-data.setCell(2, 1, 'loginWithThirdUser')
-data.setCell(2, 2, 'test_Cases_Class.TC08_Multiple_Login_ProductionTest')
-data.setCell(2, 3, 41885);
+data.setCell(0, 3, 47518);
 window.suiteTableData['DFCloudSuite']= { tableData: data, tableDiv: 'times-div-DFCloudSuite'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 15 minutes</span>
+              <span class="suite-total-time">Total running time: 47 seconds</span>
               <div id="times-div-DFCloudSuite">
               </div> <!-- times-div-DFCloudSuite -->
             </div> <!-- times-div -->
@@ -324,22 +235,12 @@ return data;
                 <span class="method-start">0 ms</span>
               </div> <!-- configuration-test before -->
               <div class="test-method">
-                <span class="method-name">loginWithFirstUser</span>
-                <span class="method-start">2877 ms</span>
-              </div> <!-- test-method -->
-              <div class="test-method">
-                <img src="failed.png">
-                </img>
-                <span class="method-name">loginWithSecondUser</span>
-                <span class="method-start">864990 ms</span>
-              </div> <!-- test-method -->
-              <div class="test-method">
                 <span class="method-name">loginWithThirdUser</span>
-                <span class="method-start">916865 ms</span>
+                <span class="method-start">1679 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-test after">
                 <span class="method-name">tearDown</span>
-                <span class="method-start">958755 ms</span>
+                <span class="method-start">49248 ms</span>
               </div> <!-- configuration-test after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->
