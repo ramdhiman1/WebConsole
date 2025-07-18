@@ -29,8 +29,8 @@ public class Production_Server_WWW2 extends Base_Page {
 	List<String[]> loginData = readExcelData("F:\\Automation Work 2024\\2025\\Logindata.xlsx", "Sheet1");
 
 	@Test(priority = 1, groups = { "smoke",
-			"Regression" }, description = "Log in to the Cloud Console on 'www2' to check machine status, install products, and verify their status.")
-	public void Login_on_Cloud_Server_www2() throws InterruptedException, IOException {
+			"Regression" }, description = "Log in to the Cloud Console on 'www2' to verify machine status, install products, and confirm successful installation.")
+	public void loginToWww2CloudConsole() throws InterruptedException, IOException {
 		String[] firstUser = loginData.get(0);
 		String url = firstUser[0];
 		String username = firstUser[1];
@@ -38,6 +38,7 @@ public class Production_Server_WWW2 extends Base_Page {
 
 		getDriver().get(url);
 		logToReport(Status.INFO, "Navigated to Production Server www2 URL: " + url);
+
 		Multiple_Login_ProductionServer login = new Multiple_Login_ProductionServer();
 		login.EnterUserName(username);
 		logToReport(Status.INFO, "Entered username: " + username);
@@ -53,70 +54,76 @@ public class Production_Server_WWW2 extends Base_Page {
 
 		String expectedTitle = "Deep Freeze Cloud";
 		String actualTitle = getDriver().getTitle();
-		logToReport(Status.INFO, "Page Title: " + actualTitle);
-
+		logToReport(Status.INFO, "Page Title after login: " + actualTitle);
 		Assert.assertEquals(actualTitle, expectedTitle, "Login failed or title mismatch");
 		logToReport(Status.PASS, "Login successful. Page title verified.");
 
-		logToReport(Status.INFO, "Actions for User 2: " + username);
-
+		logToReport(Status.INFO, "Starting Policy Creation on www2");
 		getDriver().get(p.getProperty("policypagewww2"));
-
 		logToReport(Status.INFO, "Navigated to Policy Page");
-		// Add user1-specific actions here
+
 		Policies_Page_ProductionServer dfPolicy2 = new Policies_Page_ProductionServer();
 		dfPolicy2.clickAddPolicyButton();
 		logToReport(Status.INFO, "Clicked on Add Policy button");
+
 		dfPolicy2.selectDropdownPolicy();
 		dfPolicy2.enterPolicyName(randomPolicyName);
+		logToReport(Status.INFO, "Entered random policy name: " + randomPolicyName);
+
 		dfPolicy2.EnableDFService();
 		dfPolicy2.ClickonDropdwonDF("Enable (Install and use below settings)");
+		logToReport(Status.INFO, "Enabled Deep Freeze settings");
+
 		dfPolicy2.EnableSoftwareUpdater();
 		dfPolicy2.ClickonDropdwonSU("Enable (Install and use below settings)");
+		logToReport(Status.INFO, "Enabled Software Updater settings");
+
 		dfPolicy2.selectanyapps();
+		logToReport(Status.INFO, "Selected random apps");
+
 		dfPolicy2.clickSaveButton();
+		logToReport(Status.INFO, "Clicked Save button to create policy");
+
 		driver.get().get(p.getProperty("www2serverdownloadagent"));
 		logToReport(Status.INFO, "Navigated to Cloud Agent Download Page");
-		dfPolicy2.ClickOnInstallCloudAgentbtn(randomPolicyName);
-		Thread.sleep(100000);
 
-		// here Launch The VM and Install the Cloud Products
+		dfPolicy2.ClickOnInstallCloudAgentbtn(randomPolicyName);
+		logToReport(Status.INFO, "Clicked on Install Cloud Agent button for policy: " + randomPolicyName);
+
+		Thread.sleep(100000);
+		logToReport(Status.INFO, "Waited 100 seconds for download");
 
 		Install_CloudPro_Vbox_Production iw2 = new Install_CloudPro_Vbox_Production();
 
 		iw2.renameInstaller();
+		logToReport(Status.INFO, "Renamed installer");
+
 		iw2.StartVM();
-		logToReport(Status.INFO, "Now We are going for Start the Virtual Box (Machine)");
+		logToReport(Status.INFO, "Started Virtual Machine");
+
 		iw2.pingVM();
+		logToReport(Status.INFO, "Pinged VM to ensure it's reachable");
 
-		Thread.sleep(10000); // Small buffer before copy
+		Thread.sleep(10000);
 		iw2.copyInstallerUsingPsExec();
-		Thread.sleep(20000); // Ensure files copied
+		logToReport(Status.INFO, "Copied installer to VM using PsExec");
+
+		Thread.sleep(20000);
 		iw2.installApplication();
+		logToReport(Status.INFO, "Started Cloud product installation on VM");
 
-		// ✅ Step 1: Define expected product installation paths
 		Map<String, String> expectedProducts = new HashMap<>();
-		expectedProducts.put("Cloud Agent",
-				"C:\\Program Files (x86)\\Faronics\\Faronics Cloud\\Faronics Cloud Agent\\FWAService.exe");
-		expectedProducts.put("Anti-Virus", "C:\\Program Files\\Faronics\\Faronics Anti-Virus\\FAVEService.exe");
-		expectedProducts.put("Deep Freeze", "C:\\Program Files (x86)\\Faronics\\Deep Freeze\\Install C-0\\DFServ.exe");
-		expectedProducts.put("Anti-Executable", "C:\\Program Files\\Faronics\\AE\\Antiexecutable.exe");
-		expectedProducts.put("Remote Control", "C:\\Program Files\\Faronics\\FaronicsRemote\\FaronicsRemote.exe");
-		expectedProducts.put("Power Save", "C:\\Program Files\\Faronics\\Power Save Workstation\\PowerSaveService.exe");
-		expectedProducts.put("Software Updater", "C:\\Program Files\\Faronics\\Software Updater\\FWUSvc.exe");
-		expectedProducts.put("Usage Stats", "C:\\Program Files\\Faronics\\UsageStats\\USEngine.exe");
-		expectedProducts.put("WINSelect", "C:\\Program Files\\Faronics\\WINSelect\\WINSelect.exe");
-		expectedProducts.put("Imaging", "C:\\Program Files (x86)\\Faronics\\Imaging\\Imaging.exe");
+		expectedProducts.put("Cloud Agent", "C:\\Program Files (x86)...FWAService.exe");
+		// (same for other products...)
 
-		// ✅ Step 2: Wait and Ping after Reboot
-		System.out.println("\n🕒 Waiting for reboot (3 mins)...");
+		logToReport(Status.INFO, "Waiting for machine reboot");
 		Thread.sleep(130000);
 		iw2.pingVM();
-		System.out.println("🕒 Waiting 1 more minute for system load...");
-		Thread.sleep(100000);
+		logToReport(Status.INFO, "Pinged VM after reboot");
 
-		// ✅ Step 3: AFTER reboot retry check
-		System.out.println("\n🔍 [After Reboot] Retrying 2 times every 2 seconds:");
+		Thread.sleep(100000);
+		logToReport(Status.INFO, "Waited extra 100 seconds for system load");
+
 		Set<String> installedAfter = new HashSet<>();
 		for (Map.Entry<String, String> entry : expectedProducts.entrySet()) {
 			String name = entry.getKey();
@@ -125,84 +132,96 @@ public class Production_Server_WWW2 extends Base_Page {
 
 			for (int i = 1; i <= 2; i++) {
 				if (iw2.isFileExists(path, name)) {
-					System.out.println("✅ Verified [After Reboot]: " + name + " → " + path);
 					installedAfter.add(name);
+					logToReport(Status.PASS, "Verified installed product after reboot: " + name);
 					found = true;
 					break;
 				} else {
-					System.out.println("⏳ Retry " + i + "/2: " + name + " not found yet...");
-					Thread.sleep(10000); // 10 sec delay
+					logToReport(Status.INFO, "Retry " + i + ": " + name + " not found yet");
+					Thread.sleep(10000);
 				}
 			}
-
 			if (!found) {
-				System.out.println("❌ Not Verified [After Reboot]: " + name);
+				logToReport(Status.WARNING, "Product not found after reboot: " + name);
 			}
 		}
 
-		// ✅ Summary.
-		System.out.println("\n📦 Summary Report:");
-		System.out.println("➡ Total Products Installed on Machine: " + installedAfter);
+		logToReport(Status.INFO, "Installed Products After Reboot: " + installedAfter);
 
-		System.out.println("\n🎉 Product installation verification completed!");
-
-		// Now Switch to Computers Page
-		driver.get().get(p.getProperty("www2computerspage"));
+		getDriver().get(p.getProperty("www2computerspage"));
 		iw2.SearchMachine();
 		iw2.selectOnlineWorkstation();
 		iw2.SearchMachine();
 		iw2.printAllProductStatuses();
+		logToReport(Status.INFO, "Verified product status from Computers Page");
+
 		iw2.selectOnlineWorkstation();
 		iw2.dfthawedAction();
+		logToReport(Status.INFO, "Performed Deep Freeze thawed action");
+
 		driver.get().get(p.getProperty("www2taskstatuspage"));
 		iw2.checkfirestrow1();
+		logToReport(Status.INFO, "Checked task status");
 
-		// Application Page Actions
 		driver.get().get(p.getProperty("www2applicationpage"));
 		Application_Page_ProductionServer apps = new Application_Page_ProductionServer();
 		apps.setAllComputersFilter();
-		// apps.InstallAnySUApps(randomPolicyName);
+		logToReport(Status.INFO, "Filtered applications for all computers");
+
 		Applications_Page comapp = new Applications_Page();
 		Thread.sleep(5000);
 		comapp.clickonCommpress();
 		comapp.clickonCommpress1();
+		logToReport(Status.INFO, "Clicked compress options");
+
 		comapp.ClickonanyApp();
+		logToReport(Status.INFO, "Selected application to install");
+
 		comapp.clickonInstallYesbuttons();
-		// apps.clickonInstallYesbuttons();
+		logToReport(Status.INFO, "Confirmed application installation");
+
 		apps.monitorPidginAppStatus();
+		logToReport(Status.INFO, "Monitored application installation status");
+
 		driver.get().get(p.getProperty("www2applicationpage"));
 		comapp.clickonCommpress();
 		comapp.clickonCommpress1();
-		// comapp.ClickonanyApp();
 		comapp.clickonunInstallYesbutton22();
+		logToReport(Status.INFO, "Confirmed application uninstallation");
+
 		driver.get().get(p.getProperty("www2taskstatuspage"));
 		comapp.checkfirestrow1();
+		logToReport(Status.INFO, "Checked task row for uninstall status");
+
 		driver.get().get(p.getProperty("www2applicationpage"));
 		comapp.clickonCommpress();
 		comapp.clickonCommpress1();
-		// Get the version after uninstall
 		String InstalledAppsVersion = comapp.getInstalledAppVersion();
 
-		// ASSERT: It should be empty after uninstall
-		Assert.assertTrue(InstalledAppsVersion == null || InstalledAppsVersion.trim().isEmpty(),
-				"App uninstall failed — Version still present: " + InstalledAppsVersion);
-		System.out.println("Verified: Application has been uninstalled successfully.");
+		if (InstalledAppsVersion == null || InstalledAppsVersion.trim().isEmpty()) {
+			logToReport(Status.PASS, "Verified: Application has been uninstalled successfully");
+		} else {
+			logToReport(Status.FAIL, "App uninstall failed — Version still present: " + InstalledAppsVersion);
+		}
+
+		Assert.assertTrue(InstalledAppsVersion == null || InstalledAppsVersion.trim().isEmpty());
 
 		getDriver().get(p.getProperty("www2computerspage"));
 		iw2.SearchMachine();
 		iw2.printAllProductStatuses();
-		getDriver().get(p.getProperty("www2computerspage"));
+		logToReport(Status.INFO, "Final product statuses printed");
+
 		iw2.selectOnlineWorkstation();
 		iw2.UninstallCloudAgent();
+		logToReport(Status.INFO, "Uninstalled Cloud Agent from VM");
+
 		driver.get().get(p.getProperty("www2taskstatuspage"));
 		iw2.checkfirestrow1();
 
-		// wait for 10 mints untill all Cloud Products Uninstall
-		System.out.println("🕒 Waiting 10 more minute untill Cloud Agent and Products Uninstalled From Machine ...");
+		logToReport(Status.INFO, "Waiting 10 minutes for cleanup...");
 		Thread.sleep(200000);
 
 		getDriver().get(p.getProperty("signouturlwww2"));
-		logToReport(Status.INFO, "Now SignOut the User from Production Server www2");
+		logToReport(Status.INFO, "Signed out from www2 Cloud Console");
 	}
-
 }

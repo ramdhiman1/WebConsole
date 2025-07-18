@@ -2,18 +2,18 @@
 <testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-07-18T17:35:53 IST" name="DFCloudSuite" finished-at="2025-07-18T17:37:18 IST" duration-ms="84173">
+  <suite started-at="2025-07-18T19:19:58 IST" name="DFCloudSuite" finished-at="2025-07-18T19:21:19 IST" duration-ms="81081">
     <groups>
       <group name="Regression">
-        <method signature="Production_Server_WWW2.Login_on_Cloud_Server_www2()[pri:1, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" name="Login_on_Cloud_Server_www2" class="test_Cases_Class.Production_Server_WWW2"/>
+        <method signature="Production_Server_WWW2.loginToWww2CloudConsole()[pri:1, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" name="loginToWww2CloudConsole" class="test_Cases_Class.Production_Server_WWW2"/>
       </group> <!-- Regression -->
       <group name="smoke">
-        <method signature="Production_Server_WWW2.Login_on_Cloud_Server_www2()[pri:1, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" name="Login_on_Cloud_Server_www2" class="test_Cases_Class.Production_Server_WWW2"/>
+        <method signature="Production_Server_WWW2.loginToWww2CloudConsole()[pri:1, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" name="loginToWww2CloudConsole" class="test_Cases_Class.Production_Server_WWW2"/>
       </group> <!-- smoke -->
     </groups>
-    <test started-at="2025-07-18T17:35:53 IST" name="chrome" finished-at="2025-07-18T17:37:18 IST" duration-ms="84173">
+    <test started-at="2025-07-18T19:19:58 IST" name="chrome" finished-at="2025-07-18T19:21:19 IST" duration-ms="81081">
       <class name="test_Cases_Class.Production_Server_WWW2">
-        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" started-at="2025-07-18T17:35:53 IST" name="setup" finished-at="2025-07-18T17:36:03 IST" duration-ms="9121" status="PASS">
+        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" started-at="2025-07-18T19:19:58 IST" name="setup" finished-at="2025-07-18T19:20:09 IST" duration-ms="11667" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -29,7 +29,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setup -->
-        <test-method signature="Login_on_Cloud_Server_www2()[pri:1, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" started-at="2025-07-18T17:36:03 IST" name="Login_on_Cloud_Server_www2" description="Log in to the Cloud Console on &#039;www2&#039; to check machine status, install products, and verify their status." finished-at="2025-07-18T17:37:17 IST" duration-ms="74344" status="FAIL">
+        <test-method signature="loginToWww2CloudConsole()[pri:1, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" started-at="2025-07-18T19:20:09 IST" name="loginToWww2CloudConsole" description="Log in to the Cloud Console on &#039;www2&#039; to verify machine status, install products, and confirm successful installation." finished-at="2025-07-18T19:21:18 IST" duration-ms="68774" status="FAIL">
           <exception class="java.lang.AssertionError">
             <message>
               <![CDATA[Login failed or title mismatch expected [Deep Freeze Cloud1] but found [Deep Freeze Cloud]]]>
@@ -41,7 +41,7 @@ at org.testng.Assert.failNotEquals(Assert.java:1578)
 at org.testng.Assert.assertEqualsImpl(Assert.java:150)
 at org.testng.Assert.assertEquals(Assert.java:132)
 at org.testng.Assert.assertEquals(Assert.java:656)
-at test_Cases_Class.Production_Server_WWW2.Login_on_Cloud_Server_www2(Production_Server_WWW2.java:49)
+at test_Cases_Class.Production_Server_WWW2.loginToWww2CloudConsole(Production_Server_WWW2.java:58)
 at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
@@ -73,8 +73,8 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
           </exception> <!-- java.lang.AssertionError -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- Login_on_Cloud_Server_www2 -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" started-at="2025-07-18T17:37:17 IST" name="tearDown" finished-at="2025-07-18T17:37:18 IST" duration-ms="199" status="PASS">
+        </test-method> <!-- loginToWww2CloudConsole -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" started-at="2025-07-18T19:21:18 IST" name="tearDown" finished-at="2025-07-18T19:21:19 IST" duration-ms="205" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->

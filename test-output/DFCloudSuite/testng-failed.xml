@@ -13,7 +13,7 @@
     <classes>
       <class name="test_Cases_Class.Production_Server_WWW2">
         <methods>
-          <include name="Login_on_Cloud_Server_www2"/>
+          <include name="loginToWww2CloudConsole"/>
           <include name="setup"/>
           <include name="tearDown"/>
         </methods>
