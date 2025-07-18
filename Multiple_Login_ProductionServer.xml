@@ -5,6 +5,7 @@
     <listener class-name="utilities.ExtentReportManager"/>
     <listener class-name="utilities.MyListener"/>
     <listener class-name="utilities.AllureListener"/>
+    <listener class-name="reporting.CustomReportListener"/>
   </listeners>
 
  <!-- <test name="CloudConsoleTests"> -->
@@ -16,7 +17,9 @@
 		
 		<classes>
 		     
-			<class name="test_Cases_Class.TC08_Multiple_Login_ProductionTest" />
+			<class name="test_Cases_Class.Production_Server_WWW2" /> 
+		<!--	<class name="test_Cases_Class.Production_Server_WWW3" />
+			<class name="test_Cases_Class.Production_Server_WWW9" />-->
 	
 			
 

@@ -319,7 +319,7 @@ public class Base_Page {
 	@Step("Capture screen for test: {testName}")
 	@Attachment(value = "Screenshot", type = "image/png")
 	// Updated captureScreen method to save screenshots in the report folder
-	public String captureScreen(String testName, String reportDir) throws IOException {
+/*	public String captureScreen(String testName, String reportDir) throws IOException {
 		// Create directory if it doesn't exist
 		new File(reportDir).mkdirs();
 
@@ -335,7 +335,28 @@ public class Base_Page {
 		Files.copy(source.toPath(), target.toPath());
 
 		return target.getAbsolutePath(); // Return the full path for the report
-	}   
+	}   */
+	public String captureScreen(String testName, String reportDir) throws IOException {
+	    new File(reportDir).mkdirs();
+
+	    String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+	    String fileName = testName + "_" + timestamp + ".png";
+	    String filePath = reportDir + File.separator + fileName;
+
+	    if (driver.get() == null) {
+	        System.out.println("❌ WebDriver is null, screenshot skipped.");
+	        return "";
+	    }
+
+	    TakesScreenshot ts = (TakesScreenshot) driver.get();
+	    File source = ts.getScreenshotAs(OutputType.FILE);
+	    File target = new File(filePath);
+	    Files.copy(source.toPath(), target.toPath());
+
+	    System.out.println("✅ Screenshot saved at: " + filePath);
+	    return target.getAbsolutePath();
+	}
+
 	
 	//////////////////////////////////////////////////
 

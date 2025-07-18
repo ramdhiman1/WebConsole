@@ -25,8 +25,8 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 		wait = new WebDriverWait(driver.get(), Duration.ofSeconds(15));
 	}
 
-	String remoteHost = "192.168.30.176";
-	String remoteMachineName = "192.168.30.176";
+	String remoteHost = "192.168.30.115";
+	String remoteMachineName = "DESKTOP-VO6FI92";
 	String vmUser = "Administrator";
 	String vmPassword = "aloha";
 	String psExecPath = "d:/DFCloud/Downloads/PSTools/PsExec64.exe";
@@ -229,7 +229,7 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 		}
 	}
 
-	// ✅ Now We are on Computers Page, so search installed machine
+	// ✅ Now We are on Computers Page, so search installed machine.
 	@FindBy(xpath = "//div[@aria-label='Search in data grid']//input[@role='textbox']")
 	WebElement clickonSearchbox;
 
@@ -241,7 +241,7 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 
 	// Now check Machine is Online / offline
 
-	public void selectOnlineWorkstation() throws InterruptedException {
+/*	public void selectOnlineWorkstation() throws InterruptedException {
 		int retryCount = 0;
 		int maxRetries = 10;
 		boolean onlineMachineFound = false;
@@ -300,67 +300,60 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 			// For example, you could fail the test or exit the process.
 		}
 	}
-
-	public void printAllProductStatuses() throws InterruptedException {
+*/
+	
+	
+	public void selectOnlineWorkstation() throws InterruptedException {
 		int retryCount = 0;
 		int maxRetries = 5;
 		boolean onlineMachineFound = false;
 
 		while (retryCount < maxRetries && !onlineMachineFound) {
 			List<WebElement> rowData = driver.get()
-					.findElements(By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr"));
+					.findElements(By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr[1]"));
 
 			for (WebElement row : rowData) {
-				WebElement compStatus = row.findElement(By.xpath(".//td[5]"));
 
-				if (compStatus.getText().equalsIgnoreCase("online")) {
-					WebElement titleElement = row.findElement(By.xpath(".//td[2]//img"));
-					String titleAttribute = titleElement.getAttribute("title");
+				boolean isOnline = false;
 
-					if ("Cloud Agent".equalsIgnoreCase(titleAttribute)) {
-						// ✅ Select the machine
-						WebElement checkbox = row.findElement(By.xpath(".//td[1]"));
-						checkbox.click();
+				// ✅ Check from column 3 to 7 for "online"
+				for (int col = 3; col <= 7; col++) {
+					try {
+						WebElement statusCell = row.findElement(By.xpath(".//td[" + col + "]"));
+						String statusText = statusCell.getText().trim();
 
-						onlineMachineFound = true;
-
-						// ✅ Get all headers (column names)
-						List<WebElement> headers = driver.get()
-								.findElements(By.xpath("//tr[@class='dx-row dx-column-lines dx-header-row']//td"));
-
-						System.out.println("\n📊 Product Status (With Column Names):");
-
-						// ✅ Loop from column 10 to 23
-						for (int col = 10; col <= 23; col++) {
-							try {
-								WebElement headerCell = headers.get(col - 1); // index is 0-based
-								String headerName = headerCell.getText().trim();
-
-								if (headerName.isEmpty()) {
-									headerName = headerCell.getAttribute("title"); // fallback to tooltip
-								}
-								if (headerName == null || headerName.isEmpty()) {
-									headerName = "Column " + col;
-								}
-
-								// Product status title from row
-								WebElement productStatusElement = row.findElement(By.xpath(".//td[" + col + "]//div"));
-								String productTitle = productStatusElement.getAttribute("title");
-
-								System.out.println("🔹 " + headerName + ": " + productTitle);
-							} catch (Exception e) {
-								System.out.println("❌ Column " + col + ": Header/Status not found.");
-							}
+						if (statusText.equalsIgnoreCase("online")) {
+							isOnline = true;
+							break;
 						}
+					} catch (Exception e) {
+						System.out.println("❌ Failed to read status from column " + col);
+					}
+				}
 
-						break;
+				if (isOnline) {
+					// ✅ Now check if it's Cloud Agent
+					try {
+						WebElement titleElement = row.findElement(By.xpath(".//td[2]//img"));
+						String titleAttribute = titleElement.getAttribute("title");
+
+						if ("Cloud Agent".equalsIgnoreCase(titleAttribute)) {
+							// ✅ Select the machine checkbox
+							WebElement checkbox = row.findElement(By.xpath(".//td[1]"));
+							checkbox.click();
+
+							onlineMachineFound = true;
+							System.out.println("✅ Online machine with 'Cloud Agent' found and selected.");
+							break;
+						}
+					} catch (Exception e) {
+						System.out.println("❌ Failed to verify 'Cloud Agent' for selected row.");
 					}
 				}
 			}
 
 			if (!onlineMachineFound) {
-				System.out.println(
-						"❗ No online machine with 'Cloud Agent' found. Retrying attempt " + (retryCount + 1) + "...");
+				System.out.println("🔄 No online machine with 'Cloud Agent' found, retrying attempt " + (retryCount + 1) + "...");
 				Thread.sleep(20000);
 				driver.get().navigate().refresh();
 				wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
@@ -370,11 +363,104 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 		}
 
 		if (onlineMachineFound) {
-			System.out.println("✅ Online machine selected and product statuses printed.");
+			System.out.println("✅ Machine selected. Proceeding to next step...");
 		} else {
 			System.out.println("❌ Max retries reached. No suitable online machine found.");
 		}
 	}
+
+	
+	
+	
+	public void printAllProductStatuses() throws InterruptedException {
+	    int retryCount = 0;
+	    int maxRetries = 5;
+	    boolean onlineMachineFound = false;
+
+	    while (retryCount < maxRetries && !onlineMachineFound) {
+
+	        // ✅ Get all machine rows from the table
+	        List<WebElement> rowData = driver.get().findElements(
+	                By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr[1]"));
+
+	        for (WebElement row : rowData) {
+
+	            // ✅ Check if any column between 3 and 7 has "online" status
+	            boolean isOnline = false;
+	            for (int i = 3; i <= 7; i++) {
+	                WebElement statusCell = row.findElement(By.xpath(".//td[" + i + "]"));
+	                if (statusCell.getText().trim().equalsIgnoreCase("online")) {
+	                    isOnline = true;
+	                    break;
+	                }
+	            }
+
+	            if (isOnline) {
+	                // ✅ Check if the product in Column 2 is "Cloud Agent"
+	                WebElement titleElement = row.findElement(By.xpath(".//td[2]//img"));
+	                String titleAttribute = titleElement.getAttribute("title");
+
+	                if ("Cloud Agent".equalsIgnoreCase(titleAttribute)) {
+	                    // ✅ Select the checkbox (Column 1)
+	                    WebElement checkbox = row.findElement(By.xpath(".//td[1]"));
+	                    checkbox.click();
+	                    onlineMachineFound = true;
+
+	                    // ✅ Get column headers
+	                    List<WebElement> headers = driver.get().findElements(
+	                            By.xpath("//tr[@class='dx-row dx-column-lines dx-header-row']//td"));
+
+	                    System.out.println("\n📊 Product Status (With Column Names):");
+
+	                    // ✅ Loop from column 9 to 22
+	                    for (int col = 9; col <= 22; col++) {
+	                        try {
+	                            // Fetch header name or fallback to tooltip or "Column X"
+	                            WebElement headerCell = headers.get(col - 1); // index is 0-based
+	                            String headerName = headerCell.getText().trim();
+
+	                            if (headerName.isEmpty()) {
+	                                headerName = headerCell.getAttribute("title"); // fallback to tooltip
+	                            }
+	                            if (headerName == null || headerName.isEmpty()) {
+	                                headerName = "Column " + col;
+	                            }
+
+	                            // Get product status value from the cell
+	                            WebElement productStatusElement = row.findElement(By.xpath(".//td[" + col + "]//div"));
+	                            String productTitle = productStatusElement.getAttribute("title");
+
+	                            System.out.println("🔹 " + headerName + ": " + productTitle);
+
+	                        } catch (Exception e) {
+	                            System.out.println("❌ Column " + col + ": Header/Status not found.");
+	                        }
+	                    }
+	                    break; // break the row loop once an online machine is found
+	                }
+	            }
+	        }
+
+	        // ✅ Retry if no online Cloud Agent machine found
+	        if (!onlineMachineFound) {
+	            System.out.println("❗ No online machine with 'Cloud Agent' found. Retrying attempt " + (retryCount + 1) + "...");
+	            Thread.sleep(20000);
+	            driver.get().navigate().refresh();
+	            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+	                    By.xpath("//div[@class='dx-scrollable-container']//table//tbody//tr")));
+	            retryCount++;
+	        }
+	    }
+
+	    // ✅ Final status
+	    if (onlineMachineFound) {
+	        System.out.println("✅ Online machine selected and product statuses printed.");
+	    } else {
+	        System.out.println("❌ Max retries reached. No suitable online machine found.");
+	    }
+	}
+
+
 
 	// Now Reboot Thawed Machine
 

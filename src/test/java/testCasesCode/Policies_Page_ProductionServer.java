@@ -56,10 +56,8 @@ public class Policies_Page_ProductionServer extends Base_Page {
 	}
 
 	public boolean clickSaveButton() {
-		boolean isPolicyAdded = false;
-		wait = new WebDriverWait(driver.get(), Duration.ofSeconds(15));
-
-		wait.until(ExpectedConditions.elementToBeClickable(clickSaveBtn)).click();
+		boolean isPolicyAdded = false;		
+		wait.until(ExpectedConditions.visibilityOf(clickSaveBtn)).click();		
 		wait.until(ExpectedConditions.visibilityOf(popupMessage));
 
 		if (popupMessage.isDisplayed()) {
@@ -142,6 +140,5 @@ public class Policies_Page_ProductionServer extends Base_Page {
 		wait.until(ExpectedConditions.visibilityOf(selectSUapplication)).click();
 		
 	}
-	
-	
+		
 }

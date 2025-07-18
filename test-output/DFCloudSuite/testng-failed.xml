@@ -5,18 +5,19 @@
     <listener class-name="utilities.ExtentReportManager"/>
     <listener class-name="utilities.MyListener"/>
     <listener class-name="utilities.AllureListener"/>
+    <listener class-name="reporting.CustomReportListener"/>
   </listeners>
   <test thread-count="5" name="chrome(failed)">
     <parameter name="os" value="Windows"/>
     <parameter name="browser" value="chrome"/>
     <classes>
-      <class name="test_Cases_Class.TC08_Multiple_Login_ProductionTest">
+      <class name="test_Cases_Class.Production_Server_WWW2">
         <methods>
+          <include name="Login_on_Cloud_Server_www2"/>
           <include name="setup"/>
           <include name="tearDown"/>
-          <include name="loginWithSecondUser"/>
         </methods>
-      </class> <!-- test_Cases_Class.TC08_Multiple_Login_ProductionTest -->
+      </class> <!-- test_Cases_Class.Production_Server_WWW2 -->
     </classes>
   </test> <!-- chrome(failed) -->
 </suite> <!-- Failed suite [DFCloudSuite] -->

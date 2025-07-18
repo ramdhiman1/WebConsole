@@ -35,7 +35,7 @@ public class Applications_Page extends Base_Page {
 	}
 
 	// Install any Apps code
-	@FindBy(xpath = "//div[@id='dvPendingApplicationsGrid']//div[@class='dx-datagrid-headers dx-datagrid-nowrap']//tr//td[11]")
+	@FindBy(xpath = "//div[@id='dvPendingApplicationsGrid']//div[@class='dx-datagrid-headers dx-datagrid-nowrap']//tr//td[7]")
 	WebElement AppsCompclick;
 
 	public void clickonCommpress() {

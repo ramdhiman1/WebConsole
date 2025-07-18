@@ -25,7 +25,7 @@
       <span class="top-banner-title-font">Test results</span>
       <button id="button" class="button">Switch Retro Theme</button> <!-- button -->
       <br/>
-      <span class="top-banner-font-1">1 suite</span>
+      <span class="top-banner-font-1">1 suite, 1 failed test</span>
     </div> <!-- top-banner-root -->
     <div class="navigator-root">
       <div class="navigator-suite-header">
@@ -39,7 +39,7 @@
         <div class="rounded-window">
           <div class="suite-header light-rounded-window-top">
             <a href="#" panel-name="suite-DFCloudSuite" class="navigator-link">
-              <span class="suite-name border-passed">DFCloudSuite</span>
+              <span class="suite-name border-failed">DFCloudSuite</span>
             </a> <!-- navigator-link -->
           </div> <!-- suite-header light-rounded-window-top -->
           <div class="navigator-suite-content">
@@ -60,7 +60,7 @@
                 </li>
                 <li>
                   <a href="#" panel-name="group-DFCloudSuite" class="navigator-link ">
-                    <span>0 groups</span>
+                    <span>2 groups</span>
                   </a> <!-- navigator-link  -->
                 </li>
                 <li>
@@ -92,21 +92,21 @@
               <div class="suite-section-content">
                 <ul>
                   <li>
-                    <span class="method-stats">1 method,   1 passed</span>
+                    <span class="method-stats">1 method, 1 failed,   </span>
                   </li>
                   <li>
-                    <span class="method-list-title passed">Passed methods</span>
-                    <span class="show-or-hide-methods passed">
-                      <a href="#" panel-name="suite-DFCloudSuite" class="hide-methods passed suite-DFCloudSuite"> (hide)</a> <!-- hide-methods passed suite-DFCloudSuite -->
-                      <a href="#" panel-name="suite-DFCloudSuite" class="show-methods passed suite-DFCloudSuite"> (show)</a> <!-- show-methods passed suite-DFCloudSuite -->
+                    <span class="method-list-title failed">Failed methods</span>
+                    <span class="show-or-hide-methods failed">
+                      <a href="#" panel-name="suite-DFCloudSuite" class="hide-methods failed suite-DFCloudSuite"> (hide)</a> <!-- hide-methods failed suite-DFCloudSuite -->
+                      <a href="#" panel-name="suite-DFCloudSuite" class="show-methods failed suite-DFCloudSuite"> (show)</a> <!-- show-methods failed suite-DFCloudSuite -->
                     </span>
-                    <div class="method-list-content passed suite-DFCloudSuite">
+                    <div class="method-list-content failed suite-DFCloudSuite">
                       <span>
-                        <img src="passed.png" width="3%"/>
-                        <a href="#" panel-name="suite-DFCloudSuite" title="test_Cases_Class.TC08_Multiple_Login_ProductionTest" class="method navigator-link" hash-for-method="loginWithThirdUser">loginWithThirdUser</a> <!-- method navigator-link -->
+                        <img src="failed.png" width="3%"/>
+                        <a href="#" panel-name="suite-DFCloudSuite" title="test_Cases_Class.Production_Server_WWW2" class="method navigator-link" hash-for-method="Login_on_Cloud_Server_www2">Login_on_Cloud_Server_www2</a> <!-- method navigator-link -->
                       </span>
                       <br/>
-                    </div> <!-- method-list-content passed suite-DFCloudSuite -->
+                    </div> <!-- method-list-content failed suite-DFCloudSuite -->
                   </li>
                 </ul>
               </div> <!-- suite-section-content -->
@@ -118,23 +118,28 @@
     <div class="wrapper">
       <div class="main-panel-root">
         <div panel-name="suite-DFCloudSuite" class="panel DFCloudSuite">
-          <div class="suite-DFCloudSuite-class-passed">
+          <div class="suite-DFCloudSuite-class-failed">
             <div class="main-panel-header rounded-window-top">
-              <img src="passed.png"/>
-              <span class="class-name">test_Cases_Class.TC08_Multiple_Login_ProductionTest</span>
+              <img src="failed.png"/>
+              <span class="class-name">test_Cases_Class.Production_Server_WWW2</span>
             </div> <!-- main-panel-header rounded-window-top -->
             <div class="main-panel-content rounded-window-bottom">
               <div class="method">
                 <div class="method-content">
-                  <a name="loginWithThirdUser">
-                  </a> <!-- loginWithThirdUser -->
-                  <span class="method-name">loginWithThirdUser</span>
+                  <a name="Login_on_Cloud_Server_www2">
+                  </a> <!-- Login_on_Cloud_Server_www2 -->
+                  <span class="method-name">Login_on_Cloud_Server_www2</span>
+                  <div class="stack-trace">java.lang.AssertionError: Login failed or title mismatch expected [Deep Freeze Cloud1] but found [Deep Freeze Cloud]
+	at test_Cases_Class.Production_Server_WWW2.Login_on_Cloud_Server_www2(Production_Server_WWW2.java:49)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+... Removed 30 stack frames
+</div> <!-- stack-trace -->
                   <em>
-(Log in to the Cloud Console on 'www3' to check machine status, install products, and verify their status.)                  </em>
+(Log in to the Cloud Console on 'www2' to check machine status, install products, and verify their status.)                  </em>
                 </div> <!-- method-content -->
               </div> <!-- method -->
             </div> <!-- main-panel-content rounded-window-bottom -->
-          </div> <!-- suite-DFCloudSuite-class-passed -->
+          </div> <!-- suite-DFCloudSuite-class-failed -->
         </div> <!-- panel DFCloudSuite -->
         <div panel-name="test-xml-DFCloudSuite" class="panel">
           <div class="main-panel-header rounded-window-top">
@@ -149,12 +154,13 @@
     &lt;listener class-name=&quot;utilities.ExtentReportManager&quot;/&gt;
     &lt;listener class-name=&quot;utilities.MyListener&quot;/&gt;
     &lt;listener class-name=&quot;utilities.AllureListener&quot;/&gt;
+    &lt;listener class-name=&quot;reporting.CustomReportListener&quot;/&gt;
   &lt;/listeners&gt;
   &lt;test thread-count=&quot;5&quot; name=&quot;chrome&quot;&gt;
     &lt;parameter name=&quot;os&quot; value=&quot;Windows&quot;/&gt;
     &lt;parameter name=&quot;browser&quot; value=&quot;chrome&quot;/&gt;
     &lt;classes&gt;
-      &lt;class name=&quot;test_Cases_Class.TC08_Multiple_Login_ProductionTest&quot;/&gt;
+      &lt;class name=&quot;test_Cases_Class.Production_Server_WWW2&quot;/&gt;
     &lt;/classes&gt;
   &lt;/test&gt; &lt;!-- chrome --&gt;
 &lt;/suite&gt; &lt;!-- DFCloudSuite --&gt;
@@ -178,6 +184,22 @@
             <span class="header-content">Groups for DFCloudSuite</span>
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
+            <div class="test-group">
+              <span class="test-group-name">Regression</span>
+              <br/>
+              <div class="method-in-group">
+                <span class="method-in-group-name">Login_on_Cloud_Server_www2</span>
+                <br/>
+              </div> <!-- method-in-group -->
+            </div> <!-- test-group -->
+            <div class="test-group">
+              <span class="test-group-name">smoke</span>
+              <br/>
+              <div class="method-in-group">
+                <span class="method-in-group-name">Login_on_Cloud_Server_www2</span>
+                <br/>
+              </div> <!-- method-in-group -->
+            </div> <!-- test-group -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->
         <div panel-name="times-DFCloudSuite" class="panel">
@@ -196,14 +218,14 @@ data.addColumn('string', 'Class');
 data.addColumn('number', 'Time (ms)');
 data.addRows(1);
 data.setCell(0, 0, 0)
-data.setCell(0, 1, 'loginWithThirdUser')
-data.setCell(0, 2, 'test_Cases_Class.TC08_Multiple_Login_ProductionTest')
-data.setCell(0, 3, 47518);
+data.setCell(0, 1, 'Login_on_Cloud_Server_www2')
+data.setCell(0, 2, 'test_Cases_Class.Production_Server_WWW2')
+data.setCell(0, 3, 74344);
 window.suiteTableData['DFCloudSuite']= { tableData: data, tableDiv: 'times-div-DFCloudSuite'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 47 seconds</span>
+              <span class="suite-total-time">Total running time: 1 minutes</span>
               <div id="times-div-DFCloudSuite">
               </div> <!-- times-div-DFCloudSuite -->
             </div> <!-- times-div -->
@@ -229,18 +251,20 @@ return data;
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <div class="chronological-class">
-              <div class="chronological-class-name">test_Cases_Class.TC08_Multiple_Login_ProductionTest</div> <!-- chronological-class-name -->
+              <div class="chronological-class-name">test_Cases_Class.Production_Server_WWW2</div> <!-- chronological-class-name -->
               <div class="configuration-test before">
                 <span class="method-name">setup(Windows, chrome)</span>
                 <span class="method-start">0 ms</span>
               </div> <!-- configuration-test before -->
               <div class="test-method">
-                <span class="method-name">loginWithThirdUser</span>
-                <span class="method-start">1679 ms</span>
+                <img src="failed.png">
+                </img>
+                <span class="method-name">Login_on_Cloud_Server_www2</span>
+                <span class="method-start">9135 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-test after">
                 <span class="method-name">tearDown</span>
-                <span class="method-start">49248 ms</span>
+                <span class="method-start">83869 ms</span>
               </div> <!-- configuration-test after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->

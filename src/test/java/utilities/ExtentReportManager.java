@@ -1,23 +1,21 @@
 package utilities;
 
 import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.zip.*;
 
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
+import org.testng.*;
+
+import com.aventstack.extentreports.*;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.aventstack.extentreports.reporter.configuration.ViewName;
+import com.aventstack.extentreports.reporter.configuration.*;
 
 import base_Classes.Base_Page;
 
@@ -63,8 +61,6 @@ public class ExtentReportManager implements ITestListener {
         sparkReporter.config().setDocumentTitle(browser + " Automation Report");
         sparkReporter.config().setReportName("Functional Testing on " + browser);
         sparkReporter.config().setTheme(Theme.DARK);
-        sparkReporter.config().setCss(".badge-primary{background-color:#fd3259}");
-        sparkReporter.config().setJs("document.getElementsByClassName('logo')[0].style.display='none';");
         sparkReporter.viewConfigurer().viewOrder().as(new ViewName[]{
                 ViewName.DASHBOARD,
                 ViewName.CATEGORY,
@@ -133,21 +129,93 @@ public class ExtentReportManager implements ITestListener {
     public void onFinish(ITestContext testContext) {
         flushReport();
 
-        String repName = "Test-Report-" + testContext.getCurrentXmlTest().getParameter("browser") +
-                "-" + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + ".html";
-        File reportFile = new File(reportDir + "\\" + repName);
+        File reportFolder = new File(reportDir);
+        System.out.println("📁 Report directory path: " + reportFolder.getAbsolutePath());
 
-        System.out.println("📄 Report file path: " + reportFile.getAbsolutePath());
-
-        if (reportFile.exists()) {
-            System.out.println("✅ Report file exists. Opening...");
+        if (reportFolder.exists()) {
+            System.out.println("✅ Report folder exists. Opening...");
             try {
-                Desktop.getDesktop().browse(reportFile.toURI());
+                Desktop.getDesktop().open(reportFolder);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            // ✅ Zip and email the folder
+            String zipPath = reportDir + ".zip";
+            try {
+                zipFolder(reportFolder.getAbsolutePath(), zipPath);
+                sendEmailWithZip(zipPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         } else {
-            System.out.println("❌ Report file not found.");
+            System.out.println("❌ Report folder not found.");
+        }
+    }
+
+    // ✅ Zip folder utility
+    public static void zipFolder(String sourceDirPath, String zipFilePath) throws IOException {
+        Path zipPath = Files.createFile(Paths.get(zipFilePath));
+        try (ZipOutputStream zs = new ZipOutputStream(Files.newOutputStream(zipPath))) {
+            Path pp = Paths.get(sourceDirPath);
+            Files.walk(pp)
+                    .filter(path -> !Files.isDirectory(path))
+                    .forEach(path -> {
+                        ZipEntry zipEntry = new ZipEntry(pp.relativize(path).toString());
+                        try {
+                            zs.putNextEntry(zipEntry);
+                            Files.copy(path, zs);
+                            zs.closeEntry();
+                        } catch (IOException e) {
+                            System.err.println(e);
+                        }
+                    });
+        }
+    }
+
+    // ✅ Email sender for zip
+    private void sendEmailWithZip(String zipFilePath) {
+        final String fromEmail = "sonu2010dhiman@gmail.com"; // ✅ replace
+        final String password = "gycw idcf fuyv cglp";     // ✅ use Gmail App Password
+        final String toEmail = "ramdhiman222@gmail.com"; // ✅ replace
+
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(props, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(fromEmail, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(fromEmail));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
+            message.setSubject("📦 Automation Report ZIP - DeepFreeze");
+
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText("Hi,\n\nPlease find the attached ZIP of the automation report.\n\nRegards,\nAutomation Team");
+
+            MimeBodyPart attachmentPart = new MimeBodyPart();
+            attachmentPart.attachFile(new File(zipFilePath));
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+            multipart.addBodyPart(attachmentPart);
+
+            message.setContent(multipart);
+            Transport.send(message);
+
+            System.out.println("📧 Email with ZIP sent successfully!");
+
+        } catch (Exception e) {
+            System.out.println("❌ Failed to send email with ZIP.");
+            e.printStackTrace();
         }
     }
 }
