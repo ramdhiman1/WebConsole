@@ -2,18 +2,18 @@
 <testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-07-18T19:19:58 IST" name="DFCloudSuite" finished-at="2025-07-18T19:21:19 IST" duration-ms="81081">
+  <suite started-at="2025-07-21T09:30:52 IST" name="DFCloudSuite" finished-at="2025-07-21T10:06:07 IST" duration-ms="2114312">
     <groups>
-      <group name="Regression">
-        <method signature="Production_Server_WWW2.loginToWww2CloudConsole()[pri:1, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" name="loginToWww2CloudConsole" class="test_Cases_Class.Production_Server_WWW2"/>
-      </group> <!-- Regression -->
+      <group name="regression">
+        <method signature="Multi_Server_Test_Cases_Class.loginToAllProductionServers()[pri:1, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@4d178d55]" name="loginToAllProductionServers" class="test_Cases_Class.Multi_Server_Test_Cases_Class"/>
+      </group> <!-- regression -->
       <group name="smoke">
-        <method signature="Production_Server_WWW2.loginToWww2CloudConsole()[pri:1, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" name="loginToWww2CloudConsole" class="test_Cases_Class.Production_Server_WWW2"/>
+        <method signature="Multi_Server_Test_Cases_Class.loginToAllProductionServers()[pri:1, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@4d178d55]" name="loginToAllProductionServers" class="test_Cases_Class.Multi_Server_Test_Cases_Class"/>
       </group> <!-- smoke -->
     </groups>
-    <test started-at="2025-07-18T19:19:58 IST" name="chrome" finished-at="2025-07-18T19:21:19 IST" duration-ms="81081">
-      <class name="test_Cases_Class.Production_Server_WWW2">
-        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" started-at="2025-07-18T19:19:58 IST" name="setup" finished-at="2025-07-18T19:20:09 IST" duration-ms="11667" status="PASS">
+    <test started-at="2025-07-21T09:30:52 IST" name="chrome" finished-at="2025-07-21T10:06:07 IST" duration-ms="2114312">
+      <class name="test_Cases_Class.Multi_Server_Test_Cases_Class">
+        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@4d178d55]" started-at="2025-07-21T09:30:53 IST" name="setup" finished-at="2025-07-21T09:30:56 IST" duration-ms="3395" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -29,19 +29,27 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setup -->
-        <test-method signature="loginToWww2CloudConsole()[pri:1, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" started-at="2025-07-18T19:20:09 IST" name="loginToWww2CloudConsole" description="Log in to the Cloud Console on &#039;www2&#039; to verify machine status, install products, and confirm successful installation." finished-at="2025-07-18T19:21:18 IST" duration-ms="68774" status="FAIL">
-          <exception class="java.lang.AssertionError">
+        <test-method signature="loginToAllProductionServers()[pri:1, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@4d178d55]" started-at="2025-07-21T09:30:56 IST" name="loginToAllProductionServers" description="Login to multiple production servers from Excel" finished-at="2025-07-21T10:06:06 IST" duration-ms="2109893" status="FAIL">
+          <exception class="org.openqa.selenium.TimeoutException">
             <message>
-              <![CDATA[Login failed or title mismatch expected [Deep Freeze Cloud1] but found [Deep Freeze Cloud]]]>
+              <![CDATA[Expected condition failed: waiting for visibility of [[ChromeDriver: chrome on windows (e1de39bd22ce6459ae67a6e74ea4e948)] -> xpath: //div[@id='dvConfirmCommonPopup']//div[@class='modal-header p-2 popupTitle']] (tried for 30 second(s) with 500 milliseconds interval)
+Build info: version: '4.34.0', revision: '707dcb4246*'
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.7'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.158, chrome: {chromedriverVersion: 138.0.7204.157 (e533e98b126..., userDataDir: C:\Windows\SystemTemp\scope...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:52419}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:52419/devtoo..., se:cdpVersion: 138.0.7204.158, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: e1de39bd22ce6459ae67a6e74ea4e948]]>
             </message>
             <full-stacktrace>
-              <![CDATA[java.lang.AssertionError: Login failed or title mismatch expected [Deep Freeze Cloud1] but found [Deep Freeze Cloud]
-at org.testng.Assert.fail(Assert.java:111)
-at org.testng.Assert.failNotEquals(Assert.java:1578)
-at org.testng.Assert.assertEqualsImpl(Assert.java:150)
-at org.testng.Assert.assertEquals(Assert.java:132)
-at org.testng.Assert.assertEquals(Assert.java:656)
-at test_Cases_Class.Production_Server_WWW2.loginToWww2CloudConsole(Production_Server_WWW2.java:58)
+              <![CDATA[org.openqa.selenium.TimeoutException: Expected condition failed: waiting for visibility of [[ChromeDriver: chrome on windows (e1de39bd22ce6459ae67a6e74ea4e948)] -> xpath: //div[@id='dvConfirmCommonPopup']//div[@class='modal-header p-2 popupTitle']] (tried for 30 second(s) with 500 milliseconds interval)
+Build info: version: '4.34.0', revision: '707dcb4246*'
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.7'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.158, chrome: {chromedriverVersion: 138.0.7204.157 (e533e98b126..., userDataDir: C:\Windows\SystemTemp\scope...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:52419}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:52419/devtoo..., se:cdpVersion: 138.0.7204.158, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: e1de39bd22ce6459ae67a6e74ea4e948
+at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
+at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
+at testCasesCode.Applications_Page.clickonInstallYesbuttons(Applications_Page.java:113)
+at test_Cases_Class.Multi_Server_Test_Cases_Class.loginToAllProductionServers(Multi_Server_Test_Cases_Class.java:194)
 at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
@@ -70,15 +78,15 @@ at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
 at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
 ]]>
             </full-stacktrace>
-          </exception> <!-- java.lang.AssertionError -->
+          </exception> <!-- org.openqa.selenium.TimeoutException -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- loginToWww2CloudConsole -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:test_Cases_Class.Production_Server_WWW2@4038cd3a]" started-at="2025-07-18T19:21:18 IST" name="tearDown" finished-at="2025-07-18T19:21:19 IST" duration-ms="205" status="PASS">
+        </test-method> <!-- loginToAllProductionServers -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@4d178d55]" started-at="2025-07-21T10:06:06 IST" name="tearDown" finished-at="2025-07-21T10:06:07 IST" duration-ms="644" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- test_Cases_Class.Production_Server_WWW2 -->
+      </class> <!-- test_Cases_Class.Multi_Server_Test_Cases_Class -->
     </test> <!-- chrome -->
   </suite> <!-- DFCloudSuite -->
 </testng-results>

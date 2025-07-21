@@ -17,7 +17,7 @@
 		
 		<classes>
 		     
-			<class name="test_Cases_Class.Production_Server_WWW2" /> 
+			<class name="test_Cases_Class.Multi_Server_Test_Cases_Class" /> 
 		<!--	<class name="test_Cases_Class.Production_Server_WWW3" />
 			<class name="test_Cases_Class.Production_Server_WWW9" />-->
 	

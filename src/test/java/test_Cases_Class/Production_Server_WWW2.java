@@ -171,8 +171,10 @@ public class Production_Server_WWW2 extends Base_Page {
 		Applications_Page comapp = new Applications_Page();
 		Thread.sleep(5000);
 		comapp.clickonCommpress();
+		Thread.sleep(5000);
 		comapp.clickonCommpress1();
 		logToReport(Status.INFO, "Clicked compress options");
+		Thread.sleep(5000);
 
 		comapp.ClickonanyApp();
 		logToReport(Status.INFO, "Selected application to install");

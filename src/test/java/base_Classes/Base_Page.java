@@ -57,6 +57,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class Base_Page {
 	protected static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+	public static ThreadLocal<String> driverName = new ThreadLocal<>();  // ✅ Add this
 //	public static WebDriver driver; // WebDriver instance
 	public Logger logger; // Logger instance
 	public WebDriverWait wait; // WebDriverWait instance
@@ -79,7 +80,7 @@ public class Base_Page {
 	@Parameters({ "os", "browser" })
 
 	public void setup(@Optional("Windows") String os, @Optional("chrome") String br) throws Exception {
-
+		driverName.set(br);  // ✅ This line is required to avoid null in your report
 		// Loading config.properties file
 		FileReader file = new FileReader("./src/test/resources/config.properties");
 		p = new Properties();

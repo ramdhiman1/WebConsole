@@ -11,13 +11,13 @@
     <parameter name="os" value="Windows"/>
     <parameter name="browser" value="chrome"/>
     <classes>
-      <class name="test_Cases_Class.Production_Server_WWW2">
+      <class name="test_Cases_Class.Multi_Server_Test_Cases_Class">
         <methods>
-          <include name="loginToWww2CloudConsole"/>
+          <include name="loginToAllProductionServers"/>
           <include name="setup"/>
           <include name="tearDown"/>
         </methods>
-      </class> <!-- test_Cases_Class.Production_Server_WWW2 -->
+      </class> <!-- test_Cases_Class.Multi_Server_Test_Cases_Class -->
     </classes>
   </test> <!-- chrome(failed) -->
 </suite> <!-- Failed suite [DFCloudSuite] -->

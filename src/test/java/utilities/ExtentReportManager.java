@@ -14,6 +14,7 @@ import javax.activation.*;
 import org.testng.*;
 
 import com.aventstack.extentreports.*;
+import com.aventstack.extentreports.markuputils.*;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.*;
 
@@ -92,27 +93,25 @@ public class ExtentReportManager implements ITestListener {
         ExtentTest test = getReporter()
                 .createTest(result.getTestClass().getName() + " - " + result.getMethod().getMethodName());
         test.assignCategory(result.getMethod().getGroups());
-        test.info(result.getMethod().getDescription());
-        test.info("Test started at: " + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
+        test.info("🟢 Test started at: " + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
         setTest(test);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        getTest().log(Status.PASS, result.getName() + " executed successfully.");
-        getTest().info("Test ended at: " + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
+        log(Status.PASS, "✅ Test Passed: " + result.getName());
+        log(Status.INFO, "🕔 Test ended at: " + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        ExtentTest test = getTest();
-        test.log(Status.FAIL, result.getName() + " failed");
-        test.log(Status.INFO, result.getThrowable().getMessage());
-        test.info("Test ended at: " + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
+        log(Status.FAIL, "❌ Test Failed: " + result.getName());
+        log(Status.FAIL, "📌 Reason: " + result.getThrowable().getMessage());
+        log(Status.INFO, "🕔 Test ended at: " + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
 
         try {
             String imgPath = new Base_Page().captureScreen(result.getName(), reportDir);
-            test.addScreenCaptureFromPath(imgPath);
+            getTest().addScreenCaptureFromPath(imgPath);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -120,9 +119,11 @@ public class ExtentReportManager implements ITestListener {
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        getTest().log(Status.SKIP, result.getName() + " got skipped");
-        getTest().log(Status.INFO, result.getThrowable() != null ? result.getThrowable().getMessage() : "No reason");
-        getTest().info("Test ended at: " + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
+        log(Status.SKIP, "⚠️ Test Skipped: " + result.getName());
+        if (result.getThrowable() != null) {
+            log(Status.INFO, "ℹ️ Reason: " + result.getThrowable().getMessage());
+        }
+        log(Status.INFO, "🕔 Test ended at: " + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
     }
 
     @Override
@@ -140,7 +141,6 @@ public class ExtentReportManager implements ITestListener {
                 e.printStackTrace();
             }
 
-            // ✅ Zip and email the folder
             String zipPath = reportDir + ".zip";
             try {
                 zipFolder(reportFolder.getAbsolutePath(), zipPath);
@@ -154,7 +154,6 @@ public class ExtentReportManager implements ITestListener {
         }
     }
 
-    // ✅ Zip folder utility
     public static void zipFolder(String sourceDirPath, String zipFilePath) throws IOException {
         Path zipPath = Files.createFile(Paths.get(zipFilePath));
         try (ZipOutputStream zs = new ZipOutputStream(Files.newOutputStream(zipPath))) {
@@ -174,11 +173,10 @@ public class ExtentReportManager implements ITestListener {
         }
     }
 
-    // ✅ Email sender for zip
     private void sendEmailWithZip(String zipFilePath) {
-        final String fromEmail = "sonu2010dhiman@gmail.com"; // ✅ replace
-        final String password = "gycw idcf fuyv cglp";     // ✅ use Gmail App Password
-        final String toEmail = "ramdhiman222@gmail.com"; // ✅ replace
+        final String fromEmail = "sonu2010dhiman@gmail.com"; // ✅ Replace
+        final String password = "gycw idcf fuyv cglp";       // ✅ Use app password
+        final String toEmail = "ramdhiman222@gmail.com";     // ✅ Replace
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -216,6 +214,45 @@ public class ExtentReportManager implements ITestListener {
         } catch (Exception e) {
             System.out.println("❌ Failed to send email with ZIP.");
             e.printStackTrace();
+        }
+    }
+
+    // ✅ Styled log to console + ExtentReport
+    public static void log(Status status, String message) {
+        System.out.println("[" + status + "] " + message);
+
+        ExtentTest test = getTest();
+        if (test != null) {
+            String styled = MarkupHelper.createLabel(message, getColor(status)).getMarkup();
+            test.log(status, styled);
+        } else {
+            System.err.println("⚠️ No ExtentTest found to log to report.");
+        }
+    }
+
+    // ✅ Plain log (without color styling)
+    public static void logToReport(Status status, String message) {
+        System.out.println("[LOG] " + message);
+        ExtentTest test = getTest();
+        if (test != null) {
+            test.log(status, message);
+        } else {
+            System.err.println("⚠️ No test instance found for ExtentReport logging.");
+        }
+    }
+
+    private static ExtentColor getColor(Status status) {
+        switch (status) {
+            case PASS:
+                return ExtentColor.GREEN;
+            case FAIL:
+                return ExtentColor.RED;
+            case SKIP:
+                return ExtentColor.ORANGE;
+            case WARNING:
+                return ExtentColor.YELLOW;
+            default:
+                return ExtentColor.BLUE;
         }
     }
 }

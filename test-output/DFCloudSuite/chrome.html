@@ -57,9 +57,9 @@ function toggleAllBoxes() {
 <tr>
 <td>Tests passed/Failed/Skipped:</td><td>0/1/0</td>
 </tr><tr>
-<td>Started on:</td><td>Fri Jul 18 19:19:58 IST 2025</td>
+<td>Started on:</td><td>Mon Jul 21 09:30:52 IST 2025</td>
 </tr>
-<tr><td>Total time:</td><td>81 seconds (81081 ms)</td>
+<tr><td>Total time:</td><td>2114 seconds (2114312 ms)</td>
 </tr><tr>
 <td>Included groups:</td><td></td>
 </tr><tr>
@@ -76,18 +76,29 @@ function toggleAllBoxes() {
 <td><b>Instance</b></td>
 </tr>
 <tr>
-<td title='test_Cases_Class.Production_Server_WWW2.loginToWww2CloudConsole()'><b>loginToWww2CloudConsole</b><br>Test class: test_Cases_Class.Production_Server_WWW2<br>Test method: Log in to the Cloud Console on 'www2' to verify machine status, install products, and confirm successful installation.</td>
-<td><div><pre>java.lang.AssertionError: Login failed or title mismatch expected [Deep Freeze Cloud1] but found [Deep Freeze Cloud]
-	at test_Cases_Class.Production_Server_WWW2.loginToWww2CloudConsole(Production_Server_WWW2.java:58)
+<td title='test_Cases_Class.Multi_Server_Test_Cases_Class.loginToAllProductionServers()'><b>loginToAllProductionServers</b><br>Test class: test_Cases_Class.Multi_Server_Test_Cases_Class<br>Test method: Login to multiple production servers from Excel</td>
+<td><div><pre>org.openqa.selenium.TimeoutException: Expected condition failed: waiting for visibility of [[ChromeDriver: chrome on windows (e1de39bd22ce6459ae67a6e74ea4e948)] -&gt; xpath: //div[@id=&apos;dvConfirmCommonPopup&apos;]//div[@class=&apos;modal-header p-2 popupTitle&apos;]] (tried for 30 second(s) with 500 milliseconds interval)
+Build info: version: &apos;4.34.0&apos;, revision: &apos;707dcb4246*&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;21.0.7&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.158, chrome: {chromedriverVersion: 138.0.7204.157 (e533e98b126..., userDataDir: C:\Windows\SystemTemp\scope...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:52419}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:52419/devtoo..., se:cdpVersion: 138.0.7204.158, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: e1de39bd22ce6459ae67a6e74ea4e948
+	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
+	at testCasesCode.Applications_Page.clickonInstallYesbuttons(Applications_Page.java:113)
+	at test_Cases_Class.Multi_Server_Test_Cases_Class.loginToAllProductionServers(Multi_Server_Test_Cases_Class.java:194)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-... Removed 30 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace556223230", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
-<div class='stack-trace' id='stack-trace556223230'><pre>java.lang.AssertionError: Login failed or title mismatch expected [Deep Freeze Cloud1] but found [Deep Freeze Cloud]
-	at org.testng.Assert.fail(Assert.java:111)
-	at org.testng.Assert.failNotEquals(Assert.java:1578)
-	at org.testng.Assert.assertEqualsImpl(Assert.java:150)
-	at org.testng.Assert.assertEquals(Assert.java:132)
-	at org.testng.Assert.assertEquals(Assert.java:656)
-	at test_Cases_Class.Production_Server_WWW2.loginToWww2CloudConsole(Production_Server_WWW2.java:58)
+... Removed 25 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1775305712", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1775305712'><pre>org.openqa.selenium.TimeoutException: Expected condition failed: waiting for visibility of [[ChromeDriver: chrome on windows (e1de39bd22ce6459ae67a6e74ea4e948)] -&gt; xpath: //div[@id=&apos;dvConfirmCommonPopup&apos;]//div[@class=&apos;modal-header p-2 popupTitle&apos;]] (tried for 30 second(s) with 500 milliseconds interval)
+Build info: version: &apos;4.34.0&apos;, revision: &apos;707dcb4246*&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;21.0.7&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.158, chrome: {chromedriverVersion: 138.0.7204.157 (e533e98b126..., userDataDir: C:\Windows\SystemTemp\scope...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:52419}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:52419/devtoo..., se:cdpVersion: 138.0.7204.158, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: e1de39bd22ce6459ae67a6e74ea4e948
+	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
+	at testCasesCode.Applications_Page.clickonInstallYesbuttons(Applications_Page.java:113)
+	at test_Cases_Class.Multi_Server_Test_Cases_Class.loginToAllProductionServers(Multi_Server_Test_Cases_Class.java:194)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
@@ -115,8 +126,8 @@ function toggleAllBoxes() {
 	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
 </pre></div></td>
-<td>68</td>
-<td>test_Cases_Class.Production_Server_WWW2@4038cd3a</td></tr>
+<td>2109</td>
+<td>test_Cases_Class.Multi_Server_Test_Cases_Class@4d178d55</td></tr>
 </table><p>
 </body>
 </html>

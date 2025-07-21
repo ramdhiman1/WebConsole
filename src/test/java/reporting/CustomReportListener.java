@@ -1,12 +1,8 @@
 package reporting;
 
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import base_Classes.Base_Page;
 import org.testng.*;
 import org.testng.xml.XmlSuite;
-
-import base_Classes.Base_Page;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -17,9 +13,13 @@ import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class CustomReportListener implements IReporter {
+public class CustomReportListener implements IReporter, ITestListener {
 
     private String reportDirPath;
+    private final Map<ITestResult, String> screenshotMap = new HashMap<>();
+    private final Map<ITestResult, String> errorMap = new HashMap<>();
+    private final Map<ITestResult, String> browserMap = new HashMap<>();
+    private final Map<ITestResult, String> osMap = new HashMap<>();
 
     @Override
     public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
@@ -29,113 +29,97 @@ public class CustomReportListener implements IReporter {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
         reportDirPath = System.getProperty("user.dir") + File.separator + "reports"
                 + File.separator + "CustomReports" + File.separator + "Report_" + timeStamp;
-
         new File(reportDirPath).mkdirs();
 
-        // ✅ Count results before rendering summary
         for (ISuite suite : suites) {
             for (ISuiteResult result : suite.getResults().values()) {
                 ITestContext context = result.getTestContext();
-                totalTests += context.getPassedTests().size()
-                        + context.getFailedTests().size()
-                        + context.getSkippedTests().size();
+                totalTests += context.getPassedTests().size() + context.getFailedTests().size() + context.getSkippedTests().size();
                 passed += context.getPassedTests().size();
                 failed += context.getFailedTests().size();
                 skipped += context.getSkippedTests().size();
             }
         }
 
-        // ✅ Start building HTML
+        // HTML Header & Style
         html.append("<html><head><title>Test Report</title><style>")
-                .append("body { font-family: Arial; background: #f4f7fa; margin: 0; padding: 20px; }")
-                .append(".summary { display: flex; justify-content: space-around; margin-bottom: 20px; margin-top: 20px; }")
+                .append("body { font-family: Arial; background: #f4f7fa; padding: 20px; }")
+                .append(".summary { display: flex; justify-content: space-around; margin-bottom: 20px; }")
                 .append(".card { padding: 20px; border-radius: 8px; color: white; font-weight: bold; width: 20%; text-align: center; }")
                 .append(".pass { background-color: #4CAF50; }")
                 .append(".fail { background-color: #f44336; }")
                 .append(".skip { background-color: #ff9800; }")
                 .append(".total { background-color: #607d8b; }")
                 .append("table { border-collapse: collapse; width: 100%; background: #fff; }")
-                .append("th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }")
-                .append("th { background-color: #3f51b5; color: white; position: sticky; top: 0; }")
+                .append("th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }")
+                .append("th { background-color: #3f51b5; color: white; }")
                 .append("tr:hover { background-color: #f1f1f1; }")
                 .append(".status-pass { color: green; font-weight: bold; }")
                 .append(".status-fail { color: red; font-weight: bold; }")
                 .append(".status-skip { color: orange; font-weight: bold; }")
                 .append(".modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }")
-                .append(".modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 80%; border-radius: 10px; }")
+                .append(".modal-content { background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 90%; border-radius: 10px; }")
                 .append(".close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }")
                 .append(".close:hover, .close:focus { color: black; text-decoration: none; cursor: pointer; }")
-                .append(".logo { height: 50px; }")
+                .append("pre { background-color: #eee; padding: 10px; border-radius: 6px; color: #333; overflow-x: auto; max-height: 200px; }")
+                .append("img { width: 100%; border-radius: 10px; border: 1px solid #ccc; margin-top: 15px; }")
                 .append("</style></head><body>");
 
-        html.append("<div style='display:flex;align-items:center;gap:20px;'>")
-                .append("<img class='logo' src='logo.png' alt='Logo'>")
-                .append("<h2>DEEP FREEZE CLOUD - Automation Test Report</h2>")
-                .append("</div>");
+        html.append("<img src='logo.png' alt='Logo' style='max-width:200px;margin-bottom:20px;'>");
+        html.append("<h2>🧪 DEEP FREEZE CLOUD - Automation Test Report</h2>");
 
-        // ✅ Summary Cards on TOP
         html.append("<div class='summary'>")
-                .append("<div class='card total'>Total: <br>").append(totalTests).append("</div>")
-                .append("<div class='card pass'>Passed: <br>").append(passed).append("</div>")
-                .append("<div class='card fail'>Failed: <br>").append(failed).append("</div>")
-                .append("<div class='card skip'>Skipped: <br>").append(skipped).append("</div>")
+                .append("<div class='card total'>Total<br>").append(totalTests).append("</div>")
+                .append("<div class='card pass'>Passed<br>").append(passed).append("</div>")
+                .append("<div class='card fail'>Failed<br>").append(failed).append("</div>")
+                .append("<div class='card skip'>Skipped<br>").append(skipped).append("</div>")
                 .append("</div>");
 
-        // ✅ Table Header
-        html.append("<table><tr><th>Test Case</th><th>Browser</th><th>Task Execution Time (s)</th><th>Status</th><th>Action</th></tr>");
+        // Table headers with Serial Number
+        html.append("<table><tr><th>#</th><th>Test Case</th><th>Test Class</th><th>Browser</th><th>OS</th><th>Status</th><th>Execution Time (s)</th><th>Action</th></tr>");
 
-        // ✅ Table Rows
-        for (ISuite suite : suites) {
-            for (ISuiteResult result : suite.getResults().values()) {
-                ITestContext context = result.getTestContext();
-                List<ITestResult> allResults = new ArrayList<>();
-                allResults.addAll(context.getPassedTests().getAllResults());
-                allResults.addAll(context.getFailedTests().getAllResults());
-                allResults.addAll(context.getSkippedTests().getAllResults());
+        int counter = 1;
+        for (ITestResult result : screenshotMap.keySet()) {
+            String methodName = result.getMethod().getMethodName();
+            String className = result.getTestClass().getName();
+            String browser = browserMap.getOrDefault(result, "N/A");
+            String os = osMap.getOrDefault(result, System.getProperty("os.name"));
+            long duration = result.getEndMillis() - result.getStartMillis();
+            double seconds = duration / 1000.0;
+            String status = "PASS";
+            String statusClass = "status-pass";
 
-                for (ITestResult testResult : allResults) {
-                    String statusClass = "status-pass";
-                    String statusText = "PASS";
+            if (result.getStatus() == ITestResult.FAILURE) {
+                status = "FAIL";
+                statusClass = "status-fail";
+            } else if (result.getStatus() == ITestResult.SKIP) {
+                status = "SKIPPED";
+                statusClass = "status-skip";
+            }
 
-                    if (testResult.getStatus() == ITestResult.FAILURE) {
-                        statusClass = "status-fail";
-                        statusText = "FAIL";
-                    } else if (testResult.getStatus() == ITestResult.SKIP) {
-                        statusClass = "status-skip";
-                        statusText = "SKIPPED";
-                    }
+            html.append("<tr><td>").append(counter++).append("</td>")
+                    .append("<td>").append(methodName).append("</td>")
+                    .append("<td>").append(className).append("</td>")
+                    .append("<td>").append(browser).append("</td>")
+                    .append("<td>").append(os).append("</td>")
+                    .append("<td class='").append(statusClass).append("'>").append(status).append("</td>")
+                    .append("<td>").append(String.format("%.2f", seconds)).append("</td>");
 
-                    String methodName = testResult.getMethod().getMethodName();
-                    long duration = testResult.getEndMillis() - testResult.getStartMillis();
-                    double durationInSeconds = duration / 1000.0;
-
-                    String browser = getBrowserInfo(testResult);
-                    String screenshot = "";
-                    String errorMsg = "";
-
-                    if (testResult.getStatus() == ITestResult.FAILURE) {
-                        screenshot = captureScreenshot(testResult);
-                        errorMsg = testResult.getThrowable() != null ? testResult.getThrowable().toString() : "No exception";
-                    }
-
-                    html.append("<tr><td>").append(methodName).append("</td>")
-                            .append("<td>").append(browser).append("</td>")
-                            .append("<td>").append(String.format("%.2f", durationInSeconds)).append("</td>")
-                            .append("<td class='").append(statusClass).append("'>").append(statusText).append("</td>");
-
-                    if (testResult.getStatus() == ITestResult.FAILURE) {
-                        String modalId = methodName + "Modal";
-                        html.append("<td><button onclick=\"document.getElementById('" + modalId + "').style.display='block'\">View Details</button></td></tr>");
-                        html.append("<div id='").append(modalId).append("' class='modal'>")
-                                .append("<div class='modal-content'>")
-                                .append("<span class='close' onclick=\"document.getElementById('").append(modalId).append("').style.display='none'\">&times;</span>")
-                                .append("<h3>Failure Reason</h3><p>").append(errorMsg).append("</p>")
-                                .append("<img src='").append(screenshot).append("' style='width:100%;border:1px solid #ccc;border-radius:10px;'>")
-                                .append("</div></div>");
-                    } else {
-                        html.append("<td>-</td></tr>");
-                    }
-                }
+            if (result.getStatus() == ITestResult.FAILURE) {
+                String modalId = methodName + "Modal";
+                html.append("<td><button onclick=\"document.getElementById('")
+                        .append(modalId).append("').style.display='block'\">View</button></td></tr>");
+                html.append("<div id='").append(modalId).append("' class='modal'>")
+                        .append("<div class='modal-content'>")
+                        .append("<span class='close' onclick=\"document.getElementById('")
+                        .append(modalId).append("').style.display='none'\">&times;</span>")
+                        .append("<h3 style='color:red;'>❌ Failure Reason</h3><pre>")
+                        .append(errorMap.get(result))
+                        .append("</pre><h3>📸 Screenshot</h3><img src='")
+                        .append(screenshotMap.get(result))
+                        .append("' /></div></div>");
+            } else {
+                html.append("<td>-</td></tr>");
             }
         }
 
@@ -153,49 +137,66 @@ public class CustomReportListener implements IReporter {
 
             System.out.println("✅ Report saved at: " + reportDirPath);
 
-            sendEmailWithAttachment(
-                    Arrays.asList("recipient1@gmail.com", "recipient2@yahoo.com"),
-                    reportDirPath + File.separator + "Custom_Report.html"
+            // 📧 Send the email with the generated report
+            List<String> recipients = Arrays.asList(
+                    "qa_team@example.com",
+                    "manager@example.com"
             );
+            sendEmailWithAttachment(recipients, reportDirPath + File.separator + "Custom_Report.html");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
 
-    private String getBrowserInfo(ITestResult result) {
-        Object testClass = result.getInstance();
+    @Override
+    public void onTestStart(ITestResult result) {
         try {
-            return (String) testClass.getClass().getMethod("getBrowserInfo").invoke(testClass);
+            String browserName = Base_Page.driverName.get();
+            browserMap.put(result, browserName);
+            osMap.put(result, System.getProperty("os.name"));
         } catch (Exception e) {
-            return "Unknown";
+            browserMap.put(result, "Unknown");
+            osMap.put(result, System.getProperty("os.name"));
         }
     }
+    
+    @Override public void onTestSuccess(ITestResult result) { screenshotMap.put(result, ""); }
 
-    private String captureScreenshot(ITestResult result) {
-        Object testClass = result.getInstance();
+    @Override
+    public void onTestFailure(ITestResult result) {
         try {
-            WebDriver driver = (WebDriver) testClass.getClass().getMethod("getDriver").invoke(testClass);
-            if (driver != null) {
-                String methodName = result.getMethod().getMethodName();
-                String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-                String fileName = methodName + "_screenshot_" + timeStamp + ".png";
-
-                // ✅ Pass reportDirPath to Base_Page().captureScreen()
-                Base_Page basePage = new Base_Page();
-                String fullPath = basePage.captureScreen(methodName, reportDirPath);
-
-                // ✅ Return only the filename, not full path, for embedding in HTML
-                return new File(fullPath).getName(); // just the file name
+            String screenshotPath = new Base_Page().captureScreen(result.getName(), getReportDirPath());
+            screenshotMap.put(result, screenshotPath);
+            Throwable throwable = result.getThrowable();
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            if (throwable != null) {
+                throwable.printStackTrace(pw);
+                errorMap.put(result, sw.toString());
+            } else {
+                errorMap.put(result, "No exception available.");
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
     }
 
+    @Override public void onTestSkipped(ITestResult result) { screenshotMap.put(result, ""); }
+    @Override public void onTestFailedButWithinSuccessPercentage(ITestResult result) {}
+    @Override public void onStart(ITestContext context) {}
+    @Override public void onFinish(ITestContext context) {}
 
-
+    private String getReportDirPath() {
+        if (reportDirPath == null) {
+            String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+            reportDirPath = System.getProperty("user.dir") + File.separator + "reports"
+                    + File.separator + "CustomReports" + File.separator + "Report_" + timeStamp;
+            new File(reportDirPath).mkdirs();
+        }
+        return reportDirPath;
+    }
 
     private void sendEmailWithAttachment(List<String> recipients, String filePath) {
         final String from = "sonu2010dhiman@gmail.com";
@@ -225,7 +226,7 @@ public class CustomReportListener implements IReporter {
             message.setSubject("✅ Automation Report - Deep Freeze Cloud");
 
             BodyPart textPart = new MimeBodyPart();
-            textPart.setText("Attached is the latest Automation Test Report.");
+            textPart.setText("Hello,\n\nPlease find attached the latest automation test report.\n\nRegards,\nQA Team");
 
             MimeBodyPart attachmentPart = new MimeBodyPart();
             attachmentPart.setDataHandler(new DataHandler(new FileDataSource(filePath)));
@@ -240,6 +241,7 @@ public class CustomReportListener implements IReporter {
             System.out.println("📧 Email sent to: " + String.join(", ", recipients));
 
         } catch (Exception e) {
+            System.err.println("❌ Email sending failed!");
             e.printStackTrace();
         }
     }

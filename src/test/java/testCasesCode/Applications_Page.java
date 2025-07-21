@@ -19,7 +19,7 @@ public class Applications_Page extends Base_Page {
 		super();
 		initializeElements(this);
 
-		wait = new WebDriverWait(driver.get(), Duration.ofSeconds(20));
+		wait = new WebDriverWait(driver.get(), Duration.ofSeconds(30));
 
 	}
 
@@ -48,8 +48,10 @@ public class Applications_Page extends Base_Page {
 	WebElement clickcomps;
 
 	public void clickonCommpress1() {
+		
+		wait.until(ExpectedConditions.visibilityOf(clickcomps)).click();
 
-		wait.until(ExpectedConditions.elementToBeClickable(clickcomps)).click();
+	//	wait.until(ExpectedConditions.elementToBeClickable(clickcomps)).click();
 
 	}
 
@@ -58,7 +60,8 @@ public class Applications_Page extends Base_Page {
 
 	public void ClickonanyApp() {
 
-		wait.until(ExpectedConditions.elementToBeClickable(clickonInstallbtns)).click();
+		//wait.until(ExpectedConditions.elementToBeClickable(clickonInstallbtns)).click();
+		wait.until(ExpectedConditions.visibilityOf(clickonInstallbtns)).click();
 	}
 
 	@FindBy(xpath = "//button[@id='btnUninstallApplication']")

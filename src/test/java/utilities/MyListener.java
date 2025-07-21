@@ -11,7 +11,8 @@ public class MyListener implements ITestListener {
 
     @Override
     public void onStart(ITestContext context) {
-        System.out.println("🚀 Test Execution Started for Suite: " + context.getSuite().getName());
+        String msg = "🚀 Test Execution Started for Suite: " + context.getSuite().getName();
+        System.out.println(msg);
         ExtentReportManager.getReporter(); // Initialize ExtentReports
     }
 
@@ -22,13 +23,14 @@ public class MyListener implements ITestListener {
 
         ExtentTest test = ExtentReportManager.getReporter().createTest(testName);
         ExtentReportManager.setTest(test);
+        ExtentReportManager.log(Status.INFO, "🧪 Test Started: " + testName);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
         String testName = result.getMethod().getMethodName();
         System.out.println("✅ Test Passed: " + testName);
-        ExtentReportManager.getTest().log(Status.PASS, "✅ Test Passed: " + testName);
+        ExtentReportManager.log(Status.PASS, "✅ Test Passed: " + testName);
     }
 
     @Override
@@ -39,20 +41,22 @@ public class MyListener implements ITestListener {
         System.out.println("❌ Test Failed: " + testName);
         System.out.println("   ↳ Reason: " + errorMessage);
 
-        ExtentReportManager.getTest().log(Status.FAIL, "❌ Test Failed: " + testName);
-        ExtentReportManager.getTest().log(Status.FAIL, "📌 Exception: " + errorMessage);
+        ExtentReportManager.log(Status.FAIL, "❌ Test Failed: " + testName);
+        ExtentReportManager.log(Status.FAIL, "📌 Exception: " + errorMessage);
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
         String testName = result.getMethod().getMethodName();
         System.out.println("⚠️ Test Skipped: " + testName);
-        ExtentReportManager.getTest().log(Status.SKIP, "⚠️ Test Skipped: " + testName);
+        ExtentReportManager.log(Status.SKIP, "⚠️ Test Skipped: " + testName);
     }
 
     @Override
     public void onFinish(ITestContext context) {
-        System.out.println("🏁 Test Execution Completed for Suite: " + context.getSuite().getName());
+        String msg = "🏁 Test Execution Completed for Suite: " + context.getSuite().getName();
+        System.out.println(msg);
+        ExtentReportManager.log(Status.INFO, msg);
         ExtentReportManager.flushReport(); // Final flush of report
     }
 }
