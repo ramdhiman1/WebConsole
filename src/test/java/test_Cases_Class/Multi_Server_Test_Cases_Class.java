@@ -99,6 +99,7 @@ public class Multi_Server_Test_Cases_Class extends Base_Page implements ITest {
         logToReport(Status.PASS, "✅ Agent and products installed");
 
         // ========== STEP 4: VERIFY PRODUCTS ==========
+        
         currentTestName = "VerifyProducts_Status(like Installed or Not on VM)" + serverTag;
         Map<String, String> expectedProducts = getExpectedProductMap();
         Thread.sleep(130000);
@@ -119,6 +120,7 @@ public class Multi_Server_Test_Cases_Class extends Base_Page implements ITest {
                     Thread.sleep(10000);
                 }
             }
+            
             if (!found) {
              //   logToReport(Status.WARNING, "⚠️ Product not verified: " + name);
                 System.out.println("Product not Installed: " + name);

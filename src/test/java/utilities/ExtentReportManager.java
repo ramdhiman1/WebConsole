@@ -37,6 +37,7 @@ public class ExtentReportManager implements ITestListener {
     public static void setTest(ExtentTest test) {
         extentTest.set(test);
     }
+    
 
     public static ExtentTest getTest() {
         return extentTest.get();
@@ -176,7 +177,7 @@ public class ExtentReportManager implements ITestListener {
     }
 
     private void sendEmailWithZip(String zipFilePath) {
-        final String fromEmail = "sonu2010dhiman@gmail.com2"; // ✅ Replace
+        final String fromEmail = "sonu2010dhiman@gmail.com"; // ✅ Replace
         final String password = "gycw idcf fuyv cglp";       // ✅ Use app password
         final String toEmail = "ramdhiman222@gmail.com";     // ✅ Replace
 

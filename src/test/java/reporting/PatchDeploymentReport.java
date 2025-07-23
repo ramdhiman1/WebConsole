@@ -5,6 +5,9 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.testng.*;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+
 import base_Classes.Base_Page;
 
 import java.io.*;
@@ -26,6 +29,9 @@ import javax.mail.internet.MimeMultipart;
 
 
 public class PatchDeploymentReport extends Base_Page implements ISuiteListener, ITestListener {
+	private static ThreadLocal<ExtentReports> extentReports = new ThreadLocal<>();
+    private static ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
+    private String reportDir;
 
     private final Map<String, Map<String, String>> resultMatrix = new LinkedHashMap<>();
     private final Map<String, String> failureReasons = new HashMap<>();
@@ -41,6 +47,7 @@ public class PatchDeploymentReport extends Base_Page implements ISuiteListener, 
         failureReasons.clear();
         failureScreenshots.clear();
         logMap.clear();
+        
     }
 
     @Override
@@ -350,6 +357,10 @@ private File getLatestReportFile(File folder) {
     if (files == null || files.length == 0) return null;
     return Arrays.stream(files).max(Comparator.comparingLong(File::lastModified)).orElse(null);
 }
+public static PatchDeploymentReport getReporter() {
+    return new PatchDeploymentReport(); // or return singleton if needed
+}
+
 
 }
 
