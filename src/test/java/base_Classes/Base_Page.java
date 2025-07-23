@@ -1,6 +1,9 @@
 package base_Classes;
 
 import java.io.File;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 
 import java.io.IOException;
@@ -56,7 +59,11 @@ import java.net.URL;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class Base_Page {
+	private static ThreadLocal<List<String>> testStepLogs = ThreadLocal.withInitial(ArrayList::new);
+
 	protected static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+	protected static ExtentReports extent;
+    protected static ExtentTest extentTest;
 	public static ThreadLocal<String> driverName = new ThreadLocal<>();  // ✅ Add this
 //	public static WebDriver driver; // WebDriver instance
 	public Logger logger; // Logger instance
@@ -404,13 +411,22 @@ public class Base_Page {
 	    } catch (Exception e) {
 	        System.out.println("Allure logging failed: " + e.getMessage());
 	    }
+	 // ✅ Store for HTML report Test Column
+	    testStepLogs.get().add("[" + status + "] " + message);
 	}
-
 
 
 	// Initialize page elements
 	public void initializeElements(Object page) {
 		PageFactory.initElements(driver.get(), page); // Initialize page elements using PageFactory
 	}
+	public List<String> getTestLogs() {
+	    return testStepLogs.get();
+	}
+
+	public void clearTestLogs() {
+	    testStepLogs.get().clear();
+	}
+
 
 }

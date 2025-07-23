@@ -85,7 +85,9 @@ public class CustomReportListener implements IReporter, ITestListener {
             String browser = browserMap.getOrDefault(result, "N/A");
             String os = osMap.getOrDefault(result, System.getProperty("os.name"));
             long duration = result.getEndMillis() - result.getStartMillis();
-            double seconds = duration / 1000.0;
+            long seconds = (duration / 1000) % 60;
+            long minutes = (duration / (1000 * 60)) % 60;
+            String timeFormatted = String.format("%02d:%02d", minutes, seconds);
             String status = "PASS";
             String statusClass = "status-pass";
 
@@ -162,7 +164,7 @@ public class CustomReportListener implements IReporter, ITestListener {
         }
     }
     
-    @Override public void onTestSuccess(ITestResult result) { screenshotMap.put(result, ""); }
+    @Override public void onTestSuccess(ITestResult result) { screenshotMap.put(result, ""); }    
 
     @Override
     public void onTestFailure(ITestResult result) {
@@ -223,7 +225,7 @@ public class CustomReportListener implements IReporter, ITestListener {
                 toAddresses[i] = new InternetAddress(recipients.get(i));
             }
             message.setRecipients(Message.RecipientType.TO, toAddresses);
-            message.setSubject("✅ Automation Report - Deep Freeze Cloud");
+            message.setSubject("✅ Automation Report - Deep Freeze Cloud ");
 
             BodyPart textPart = new MimeBodyPart();
             textPart.setText("Hello,\n\nPlease find attached the latest automation test report.\n\nRegards,\nQA Team");

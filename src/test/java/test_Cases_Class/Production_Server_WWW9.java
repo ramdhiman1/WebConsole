@@ -109,7 +109,7 @@ public class Production_Server_WWW9 extends Base_Page {
 		logToReport(Status.INFO, "Copied installer to VM using PsExec");
 
 		Thread.sleep(20000);
-		iw2.installApplication();
+		iw2.installCloudAgentandProducts();
 		logToReport(Status.INFO, "Started Cloud product installation on VM");
 
 		Map<String, String> expectedProducts = new HashMap<>();

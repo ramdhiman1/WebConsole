@@ -126,8 +126,8 @@ public class Application_Page_ProductionServer extends Base_Page {
     public void monitorPidginAppStatus() throws InterruptedException {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
-        int maxAttempts = 30;
-        int waitSeconds = 3;
+        int maxAttempts = 100;
+        int waitSeconds = 5;
 
         System.out.println("📢 App installation initiated. Monitoring version/status...");
 

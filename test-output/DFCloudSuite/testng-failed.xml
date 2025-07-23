@@ -5,7 +5,7 @@
     <listener class-name="utilities.ExtentReportManager"/>
     <listener class-name="utilities.MyListener"/>
     <listener class-name="utilities.AllureListener"/>
-    <listener class-name="reporting.CustomReportListener"/>
+    <listener class-name="reporting.PatchDeploymentReport"/>
   </listeners>
   <test thread-count="5" name="chrome(failed)">
     <parameter name="os" value="Windows"/>
@@ -13,7 +13,7 @@
     <classes>
       <class name="test_Cases_Class.Multi_Server_Test_Cases_Class">
         <methods>
-          <include name="loginToAllProductionServers"/>
+          <include name="runServerFlow" invocation-numbers="0 1 2"/>
           <include name="setup"/>
           <include name="tearDown"/>
         </methods>

@@ -4,24 +4,22 @@
   <listeners>
     <listener class-name="utilities.ExtentReportManager"/>
     <listener class-name="utilities.MyListener"/>
-    <listener class-name="utilities.AllureListener"/>
-    <listener class-name="reporting.CustomReportListener"/>
+    <listener class-name="utilities.AllureListener"/> 
+ <listener class-name="reporting.PatchDeploymentReport"/>
+    
   </listeners>
 
  <!-- <test name="CloudConsoleTests"> -->
 	<test thread-count="5" name="chrome">
 		<parameter name="os" value="Windows" />
-		<parameter name="browser" value="chrome" />
-		
-		        
+		<parameter name="browser" value="chrome" />		
+		      
 		
 		<classes>
 		     
 			<class name="test_Cases_Class.Multi_Server_Test_Cases_Class" /> 
 		<!--	<class name="test_Cases_Class.Production_Server_WWW3" />
-			<class name="test_Cases_Class.Production_Server_WWW9" />-->
-	
-			
+			<class name="test_Cases_Class.Production_Server_WWW9" />-->				
 
 		</classes>
 	</test> <!--

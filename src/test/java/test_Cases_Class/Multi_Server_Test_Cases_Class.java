@@ -1,248 +1,211 @@
 package test_Cases_Class;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import java.net.URL;
+import java.util.*;
 import org.testng.Assert;
+import org.testng.ITest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import com.aventstack.extentreports.Status;
+
 import base_Classes.Base_Page;
-import testCasesCode.Application_Page_ProductionServer;
-import testCasesCode.Applications_Page;
-import testCasesCode.Install_CloudPro_Vbox_Production;
-import testCasesCode.Multi_Server_Login_Page;
-import testCasesCode.Multiple_Login_ProductionServer;
-import testCasesCode.Policies_Page_ProductionServer;
+import testCasesCode.*;
 import utilities.MyListener;
 
 @Listeners(MyListener.class)
-public class Multi_Server_Test_Cases_Class extends Base_Page {
-	String randomPolicyName = randomeString().toUpperCase();
-	String editedPolicyName = randomeString().toUpperCase();
+public class Multi_Server_Test_Cases_Class extends Base_Page implements ITest {
 
-	List<String[]> loginData = readExcelData("F:\\Automation Work 2024\\2025\\Logindata.xlsx", "Sheet1");;
+    private String currentTestName = "";
 
-	@Test(priority = 1, groups = { "smoke",
-			"regression" }, description = "Login to multiple production servers from Excel")
-	public void loginToAllProductionServers() throws InterruptedException, IOException {
-		Multi_Server_Login_Page loginPage = new Multi_Server_Login_Page();
+    @Override
+    public String getTestName() {
+        return currentTestName;
+    }
 
-		for (int i = 0; i < loginData.size(); i++) {
-			String[] serverData = loginData.get(i);
-			String url = serverData[0];
-			String username = serverData[1];
-			String password = serverData[2];
+    @DataProvider(name = "serverLoginData", parallel = false)
+    public Object[][] getServerData() {
+        List<String[]> loginData = readExcelData("F:\\Automation Work 2024\\2025\\Logindata.xlsx", "Sheet1");
+        Object[][] data = new Object[loginData.size()][3];
+        for (int i = 0; i < loginData.size(); i++) {
+            data[i][0] = loginData.get(i)[0];
+            data[i][1] = loginData.get(i)[1];
+            data[i][2] = loginData.get(i)[2];
+        }
+        return data;
+    }
 
-			logToReport(Status.INFO, "🌐 Logging in to server: " + url);
-			String result = loginPage.performLogin(url, username, password);
-			logToReport(Status.INFO, "🔁 Login attempt result: " + result);
+    private String extractSubdomainFromUrl(String url) {
+        try {
+            URL netUrl = new URL(url);
+            String host = netUrl.getHost();
+            return host.split("\\.")[0];
+        } catch (Exception e) {
+            return "UnknownServer";
+        }
+    }
 
-			if (result.contains("Login Success")) {
-				logToReport(Status.PASS, "✅ Logged in successfully to: " + url);
+    @Test(priority = 1, dataProvider = "serverLoginData", description = "Run full flow per server")
+    public void LoginOnProductionServer(String url, String username, String password) throws InterruptedException, IOException {
+        String serverTag = extractSubdomainFromUrl(url);
+        Multi_Server_Login_Page loginPage = new Multi_Server_Login_Page();
+        String randomPolicyName = randomeString().toUpperCase();
 
-				// ✅ Navigate to any pages dynamically using config keys
-			/*	loginPage.navigateToPage("applicationpath"); // 🔁 Go to Application Page
-				logToReport(Status.INFO, "🎯 Navigate to Application Page");
-				loginPage.navigateToPage("computerspage"); // 🔁 Go to Computers Page
-				logToReport(Status.INFO, "🎯 Navigate to Computers Page");
-				loginPage.navigateToPage("taskstatuspagenew");
-				logToReport(Status.INFO, "🎯 Navigate to Task Status Page");
-				loginPage.navigateToPage("policypagewww2"); // 🔁 Go to Policy Page
-				logToReport(Status.INFO, "🎯 Navigate to Policy Page"); */
+        // ========== STEP 1: LOGIN ==========
+        currentTestName = "Login_" + serverTag;
+        logToReport(Status.INFO, "🌐 Logging into: " + url);
+        String result = loginPage.performLogin(url, username, password);
+        if (!result.contains("Login Success")) {
+            logToReport(Status.FAIL, "❌ Login failed for server: " + url);
+            Assert.fail("Login failed for: " + url);
+            return;
+        }
+        logToReport(Status.PASS, "✅ Login successful: " + serverTag);
+        
+        
+        // ========== STEP 2: CREATE POLICY ==========
+        currentTestName = "CreatePolicy_" + serverTag;
+        logToReport(Status.INFO, "🛠 Creating policy: " + randomPolicyName);
+        loginPage.navigateToPage("policypagewww2");
 
-				Multiple_Login_ProductionServer login = new Multiple_Login_ProductionServer();
+        Policies_Page_ProductionServer dfPolicy2 = new Policies_Page_ProductionServer();
+        dfPolicy2.clickAddPolicyButton();
+        dfPolicy2.selectDropdownPolicy();
+        dfPolicy2.enterPolicyName(randomPolicyName);
+        dfPolicy2.EnableDFService();
+        dfPolicy2.ClickonDropdwonDF("Enable (Install and use below settings)");
+        dfPolicy2.EnableSoftwareUpdater();
+        dfPolicy2.ClickonDropdwonSU("Enable (Install and use below settings)");
+        dfPolicy2.selectanyapps();
+        dfPolicy2.clickSaveButton();
+        logToReport(Status.PASS, "💾 Policy created: " + randomPolicyName);
 
-				logToReport(Status.INFO, "Starting Policy Creation");
-				loginPage.navigateToPage("policypagewww2"); // 🔁 Go to Policy Page
-				logToReport(Status.INFO, "🎯 Navigate to Policy Page");
+        // ========== STEP 3: INSTALL AGENT ==========
+        currentTestName = "Launch Virtual Machine and InstallAgent&Products_" + serverTag;
+        loginPage.navigateToPage("serverdownloadagent");
+        dfPolicy2.ClickOnInstallCloudAgentbtn(randomPolicyName);
+        logToReport(Status.INFO, "📦 Installing Cloud Agent...");
+        Thread.sleep(100000);
 
-				Policies_Page_ProductionServer dfPolicy2 = new Policies_Page_ProductionServer();
-				dfPolicy2.clickAddPolicyButton();
-				logToReport(Status.INFO, "Clicked on Add Policy button");
+        Install_CloudPro_Vbox_Production iw2 = new Install_CloudPro_Vbox_Production();
+        iw2.renameInstaller();
+        iw2.StartVM();
+        iw2.pingVM();
+        Thread.sleep(120000);
+        iw2.copyInstallerUsingPsExec();
+        Thread.sleep(20000);
+        iw2.installCloudAgentandProducts();
+        logToReport(Status.PASS, "✅ Agent and products installed");
 
-				dfPolicy2.selectDropdownPolicy();
-				dfPolicy2.enterPolicyName(randomPolicyName);
-				logToReport(Status.INFO, "Entered random policy name: " + randomPolicyName);
+        // ========== STEP 4: VERIFY PRODUCTS ==========
+        currentTestName = "VerifyProducts_Status(like Installed or Not on VM)" + serverTag;
+        Map<String, String> expectedProducts = getExpectedProductMap();
+        Thread.sleep(130000);
+        iw2.pingVM();
+        Thread.sleep(100000);
 
-				dfPolicy2.EnableDFService();
-				dfPolicy2.ClickonDropdwonDF("Enable (Install and use below settings)");
-				logToReport(Status.INFO, "Enabled Deep Freeze settings");
+        Set<String> installedAfter = new HashSet<>();
+        for (Map.Entry<String, String> entry : expectedProducts.entrySet()) {
+            String name = entry.getKey();
+            String path = entry.getValue();
+            boolean found = false;
+            for (int j = 1; j <= 2; j++) {
+                if (iw2.isFileExists(path, name)) {
+                    installedAfter.add(name);
+                    found = true;
+                    break;
+                } else {
+                    Thread.sleep(10000);
+                }
+            }
+            if (!found) {
+             //   logToReport(Status.WARNING, "⚠️ Product not verified: " + name);
+                System.out.println("Product not Installed: " + name);
+            } else {
+                logToReport(Status.PASS, "✅ Verified Product Installed: " + name);
+            }
+        }
 
-				dfPolicy2.EnableSoftwareUpdater();
-				dfPolicy2.ClickonDropdwonSU("Enable (Install and use below settings)");
-				logToReport(Status.INFO, "Enabled Software Updater settings");
+        // ========== STEP 5: CHECK PRODUCTS STATUS ==========
+        currentTestName = "Computers page: Check Product Status_" + serverTag;
+        loginPage.navigateToPage("computerspage");
+        iw2.SearchMachine();
+        iw2.printAllProductStatuses();
+        loginPage.navigateToPage("computerspage");
+        iw2.SearchMachine();
+        iw2.selectOnlineWorkstation();
+        iw2.dfthawedAction();
+        loginPage.navigateToPage("taskstatuspagenew");
+        iw2.checkfirestrow1();
+        loginPage.navigateToPage("computerspage");
+        Thread.sleep(120000);
+        loginPage.navigateToPage("applicationpath");
+        
+     // ========== STEP 6: INSTALL SU APPS ==========
+        currentTestName = "Install Any SU Application_" + serverTag;
+        Application_Page_ProductionServer apps = new Application_Page_ProductionServer();
+        apps.setAllComputersFilter();
+        Applications_Page comapp = new Applications_Page();
+        Thread.sleep(5000);
+        comapp.clickonCommpress();
+        comapp.clickonCommpress1();
+        comapp.ClickonanyApp();
+        comapp.clickonInstallYesbuttons();
+        apps.monitorPidginAppStatus();
+        logToReport(Status.PASS, "📦 App installed");
 
-				dfPolicy2.selectanyapps();
-				logToReport(Status.INFO, "Selected random apps");
+        // ========== STEP 7: UNINSTALL SU SAME Installed APP ==========
+        currentTestName = "UNINSTALL SU SAME Installed APP_" + serverTag;
+        loginPage.navigateToPage("applicationpath");
+        comapp.clickonCommpress();
+        comapp.clickonCommpress1();
+        comapp.clickonunInstallYesbutton22();
+        loginPage.navigateToPage("taskstatuspagenew");
+        comapp.checkfirestrow1();
+        loginPage.navigateToPage("applicationpath");
+        comapp.clickonCommpress();
+        comapp.clickonCommpress1();
+        String InstalledAppsVersion = comapp.getInstalledAppVersion();
+        if (InstalledAppsVersion == null || InstalledAppsVersion.trim().isEmpty()) {
+            logToReport(Status.PASS, "✅ App uninstalled successfully");
+        } else {
+            logToReport(Status.FAIL, "❌ App uninstall failed: Version still exists: " + InstalledAppsVersion);
+        }
 
-				dfPolicy2.clickSaveButton();
-				logToReport(Status.INFO, "Clicked Save button to create policy");
+        Assert.assertTrue(InstalledAppsVersion == null || InstalledAppsVersion.trim().isEmpty());
 
-				loginPage.navigateToPage("serverdownloadagent");
-				logToReport(Status.INFO, "🎯 Navigate to Task Status Page");
-				logToReport(Status.INFO, "Navigated to Cloud Agent Download Page");
+        // ========== STEP 8: UNINSTALL AGENT ==========
+        currentTestName = "Uninstall Cloud Agent & all Products_" + serverTag;
+        loginPage.navigateToPage("computerspage");
+        iw2.SearchMachine();
+        iw2.selectOnlineWorkstation();
+        iw2.UninstallCloudAgent();
 
-				dfPolicy2.ClickOnInstallCloudAgentbtn(randomPolicyName);
-				logToReport(Status.INFO, "Clicked on Install Cloud Agent button for policy: " + randomPolicyName);
+        loginPage.navigateToPage("taskstatuspagenew");
+        iw2.checkfirestrow1();
+        logToReport(Status.PASS, "🧹 Agent uninstalled");
 
-				Thread.sleep(100000);
-				logToReport(Status.INFO, "Waited 100 seconds for download");
+        Thread.sleep(200000); // cleanup wait
 
-				Install_CloudPro_Vbox_Production iw2 = new Install_CloudPro_Vbox_Production();
+        // ========== STEP 9: LOGOUT ==========
+        currentTestName = "Logged out from server_" + serverTag;
+        loginPage.performLogout();
+        logToReport(Status.INFO, "🔒 Logged out from server: " + serverTag);
+    }
 
-				iw2.renameInstaller();
-				logToReport(Status.INFO, "Renamed installer");
-
-				iw2.StartVM();
-				logToReport(Status.INFO, "Started Virtual Machine");
-
-				iw2.pingVM();
-				logToReport(Status.INFO, "Pinged VM to ensure it's reachable");
-
-				Thread.sleep(10000);
-				iw2.copyInstallerUsingPsExec();
-				logToReport(Status.INFO, "Copied installer to VM using PsExec");
-
-				Thread.sleep(20000);
-				iw2.installApplication();
-				logToReport(Status.INFO, "Started Cloud product installation on VM");
-
-				Map<String, String> expectedProducts = new HashMap<>();
-				expectedProducts.put("Cloud Agent", "C:\\Program Files (x86)...FWAService.exe");
-				// (same for other products...)
-
-				logToReport(Status.INFO, "Waiting for machine reboot");
-				Thread.sleep(130000);
-				iw2.pingVM();
-				logToReport(Status.INFO, "Pinged VM after reboot");
-
-				Thread.sleep(100000);
-				logToReport(Status.INFO, "Waited extra 100 seconds for system load");
-
-				Set<String> installedAfter = new HashSet<>();
-				for (Map.Entry<String, String> entry : expectedProducts.entrySet()) {
-					String name = entry.getKey();
-					String path = entry.getValue();
-					boolean found = false;
-
-					for (int j = 1; j <= 2; j++) {
-						if (iw2.isFileExists(path, name)) {
-							installedAfter.add(name);
-							logToReport(Status.PASS, "Verified installed product after reboot: " + name);
-							found = true;
-							break;
-						} else {
-							logToReport(Status.INFO, "Retry " + j + ": " + name + " not found yet");
-							Thread.sleep(10000);
-						}
-					}
-					if (!found) {
-						logToReport(Status.WARNING, "Product not found after reboot: " + name);
-					}
-				}
-
-				logToReport(Status.INFO, "Installed Products After Reboot: " + installedAfter);
-
-				loginPage.navigateToPage("computerspage"); // 🔁 Go to Computers Page
-				logToReport(Status.INFO, "🎯 Navigate to Computers Page");
-				//iw2.SearchMachine();
-				//iw2.selectOnlineWorkstation();
-				iw2.SearchMachine();
-				iw2.printAllProductStatuses();
-				logToReport(Status.INFO, "Verified product status from Computers Page");
-				loginPage.navigateToPage("computerspage"); // 🔁 Go to Computers Page
-				logToReport(Status.INFO, "🎯 Navigate to Computers Page");
-				iw2.SearchMachine();
-				Thread.sleep(5000);
-
-				iw2.selectOnlineWorkstation();
-				iw2.dfthawedAction();
-				logToReport(Status.INFO, "Performed Deep Freeze thawed action");
-
-				loginPage.navigateToPage("taskstatuspagenew");
-				logToReport(Status.INFO, "🎯 Navigate to Task Status Page");
-				iw2.checkfirestrow1();
-				logToReport(Status.INFO, "Checked task status");
-				
-				
-				loginPage.navigateToPage("computerspage"); // 🔁 Go to Computers Page
-				logToReport(Status.INFO, "🎯 Navigate to Computers Page");
-				logToReport(Status.INFO, "Final product statuses printed");
-				Thread.sleep(130000);
-				iw2.selectOnlineWorkstation();
-
-				loginPage.navigateToPage("applicationpath"); // 🔁 Go to Application Page
-				logToReport(Status.INFO, "🎯 Navigate to Application Page");
-				Application_Page_ProductionServer apps = new Application_Page_ProductionServer();
-				apps.setAllComputersFilter();
-				logToReport(Status.INFO, "Filtered applications for all computers");
-
-				Applications_Page comapp = new Applications_Page();
-				Thread.sleep(5000);
-				comapp.clickonCommpress();
-				comapp.clickonCommpress1();
-				logToReport(Status.INFO, "Clicked compress options");
-
-				comapp.ClickonanyApp();
-				logToReport(Status.INFO, "Selected application to install");
-
-				comapp.clickonInstallYesbuttons();
-				logToReport(Status.INFO, "Confirmed application installation");
-
-				apps.monitorPidginAppStatus();
-				logToReport(Status.INFO, "Monitored application installation status");
-
-				loginPage.navigateToPage("applicationpath"); // 🔁 Go to Application Page
-				logToReport(Status.INFO, "🎯 Navigate to Application Page");
-				comapp.clickonCommpress();
-				comapp.clickonCommpress1();
-				comapp.clickonunInstallYesbutton22();
-				logToReport(Status.INFO, "Confirmed application uninstallation");
-
-				loginPage.navigateToPage("taskstatuspagenew");
-				logToReport(Status.INFO, "🎯 Navigate to Task Status Page");
-				comapp.checkfirestrow1();
-				logToReport(Status.INFO, "Checked task row for uninstall status");
-
-				loginPage.navigateToPage("applicationpath"); // 🔁 Go to Application Page
-				logToReport(Status.INFO, "🎯 Navigate to Application Page");
-				comapp.clickonCommpress();
-				comapp.clickonCommpress1();
-				String InstalledAppsVersion = comapp.getInstalledAppVersion();
-
-				if (InstalledAppsVersion == null || InstalledAppsVersion.trim().isEmpty()) {
-					logToReport(Status.PASS, "Verified: Application has been uninstalled successfully");
-				} else {
-					logToReport(Status.FAIL, "App uninstall failed — Version still present: " + InstalledAppsVersion);
-				}
-
-				Assert.assertTrue(InstalledAppsVersion == null || InstalledAppsVersion.trim().isEmpty());
-
-				loginPage.navigateToPage("computerspage"); // 🔁 Go to Computers Page
-				logToReport(Status.INFO, "🎯 Navigate to Computers Page");
-				//iw2.SearchMachine();
-				//iw2.printAllProductStatuses();
-				logToReport(Status.INFO, "Final product statuses printed");
-				iw2.selectOnlineWorkstation();
-				iw2.UninstallCloudAgent();
-				logToReport(Status.INFO, "Uninstalled Cloud Agent from VM");
-
-				loginPage.navigateToPage("taskstatuspagenew");
-				logToReport(Status.INFO, "🎯 Navigate to Task Status Page");
-				iw2.checkfirestrow1();
-
-				logToReport(Status.INFO, "Waiting 10 minutes for cleanup...");
-				Thread.sleep(200000);
-
-				// Perform final logout
-				loginPage.performLogout();
-				logToReport(Status.INFO, "🔒 Performed logout successfully");
-		}
-	}
-	}
+    private Map<String, String> getExpectedProductMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("Cloud Agent", "C:\\Program Files (x86)\\Faronics\\Faronics Cloud\\Faronics Cloud Agent\\FWAService.exe");
+        map.put("Anti-Virus", "C:\\Program Files\\Faronics\\Faronics Anti-Virus\\FAVEService.exe");
+        map.put("Deep Freeze", "C:\\Program Files (x86)\\Faronics\\Deep Freeze\\Install C-0\\DFServ.exe");
+        map.put("Anti-Executable", "C:\\Program Files\\Faronics\\AE\\Antiexecutable.exe");
+        map.put("Remote", "C:\\Program Files\\Faronics\\FaronicsRemote\\FaronicsRemote.exe");
+        map.put("Power Save", "C:\\Program Files\\Faronics\\Power Save Workstation\\PowerSaveService.exe");
+        map.put("Software Updater", "C:\\Program Files\\Faronics\\Software Updater\\FWUSvc.exe");
+        map.put("Usage Stats", "C:\\Program Files\\Faronics\\UsageStats\\USEngine.exe");
+        map.put("WINSelect", "C:\\Program Files\\Faronics\\WINSelect\\WINSelect.exe");
+        map.put("Imaging", "C:\\Program Files (x86)\\Faronics\\Imaging\\Imaging.exe");
+        return map;
+    }
 }

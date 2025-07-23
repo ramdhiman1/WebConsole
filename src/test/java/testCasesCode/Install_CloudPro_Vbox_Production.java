@@ -116,7 +116,7 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 	 */
 
 	// Step 4: Run installer batch file remotely via PsExec
-	public void installApplication() throws IOException, InterruptedException {
+	public void installCloudAgentandProducts() throws IOException, InterruptedException {
 		String command = psExecPath + " \\\\" + remoteHost + " -u " + vmUser + " -p " + vmPassword
 				+ " -s -i 1 cmd /c e:\\runinstaller.bat";
 

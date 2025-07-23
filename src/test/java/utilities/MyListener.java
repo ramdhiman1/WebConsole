@@ -33,6 +33,7 @@ public class MyListener implements ITestListener {
         ExtentReportManager.log(Status.PASS, "✅ Test Passed: " + testName);
     }
 
+    
     @Override
     public void onTestFailure(ITestResult result) {
         String testName = result.getMethod().getMethodName();

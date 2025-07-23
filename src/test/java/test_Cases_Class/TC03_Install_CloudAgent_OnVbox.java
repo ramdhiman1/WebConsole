@@ -22,7 +22,7 @@ public class TC03_Install_CloudAgent_OnVbox extends Base_Page {
 		Thread.sleep(10000); // Small buffer before copy
 		iw.copyInstallerUsingPsExec();
 		Thread.sleep(20000); // Ensure files copied
-		iw.installApplication();
+		iw.installCloudAgentandProducts();
 
 		// ✅ Retry: Check product installation (max 20 tries with 20 sec delay)
 		boolean allInstalled = false;

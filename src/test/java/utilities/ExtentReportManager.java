@@ -21,10 +21,12 @@ import com.aventstack.extentreports.reporter.configuration.*;
 import base_Classes.Base_Page;
 
 public class ExtentReportManager implements ITestListener {
+	
 
     private static ThreadLocal<ExtentReports> extentReports = new ThreadLocal<>();
     private static ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
     private String reportDir;
+    
 
     private static final String BASE_REPORT_DIR = ".\\reports\\DeepFreezeTestReports";
 
@@ -174,7 +176,7 @@ public class ExtentReportManager implements ITestListener {
     }
 
     private void sendEmailWithZip(String zipFilePath) {
-        final String fromEmail = "sonu2010dhiman@gmail.com"; // ✅ Replace
+        final String fromEmail = "sonu2010dhiman@gmail.com2"; // ✅ Replace
         final String password = "gycw idcf fuyv cglp";       // ✅ Use app password
         final String toEmail = "ramdhiman222@gmail.com";     // ✅ Replace
 

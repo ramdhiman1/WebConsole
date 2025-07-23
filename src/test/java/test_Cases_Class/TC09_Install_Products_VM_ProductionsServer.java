@@ -21,7 +21,7 @@ public class TC09_Install_Products_VM_ProductionsServer extends Base_Page {
         Thread.sleep(10000); // Small buffer before copy
         iw.copyInstallerUsingPsExec();
         Thread.sleep(20000); // Ensure files copied
-        iw.installApplication();
+        iw.installCloudAgentandProducts();
 
         // ✅ Define expected products and their installation paths
         Map<String, String> expectedProducts = new HashMap<>();
