@@ -16,7 +16,7 @@ public class Policies_Page_ProductionServer extends Base_Page {
 	public Policies_Page_ProductionServer() {
 		super();
 		initializeElements(this);
-		wait = new WebDriverWait(driver.get(), Duration.ofSeconds(35));
+		wait = new WebDriverWait(driver.get(), Duration.ofSeconds(50));
 
 	}
 

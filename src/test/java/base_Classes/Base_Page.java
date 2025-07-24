@@ -221,7 +221,7 @@ public class Base_Page {
 			driver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 			wait = new WebDriverWait(driver.get(), Duration.ofSeconds(20)); // Initialize WebDriverWait
 			
-			driver.get().get(p.getProperty("logincloudURL"));
+		//	driver.get().get(p.getProperty("logincloudURL"));
 		//	driver.get().get("https://www4.faronicsbeta.com/en/Account/Login");
 			driver.get().manage().window().maximize();
 
