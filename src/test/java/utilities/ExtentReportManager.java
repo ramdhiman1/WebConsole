@@ -2,14 +2,12 @@ package utilities;
 
 import java.awt.Desktop;
 import java.io.*;
+import java.net.URL;
 import java.nio.file.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.zip.*;
-
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.activation.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.testng.*;
 
@@ -19,6 +17,15 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.*;
 
 import base_Classes.Base_Page;
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 
 public class ExtentReportManager implements ITestListener {
 	
@@ -91,14 +98,37 @@ public class ExtentReportManager implements ITestListener {
         }
     }
 
+   
     @Override
     public void onTestStart(ITestResult result) {
-        ExtentTest test = getReporter()
-                .createTest(result.getTestClass().getName() + " - " + result.getMethod().getMethodName());
+        String url = Base_Page.currentURL; // You already store this from the test method
+        String testName = extractServerFromUrl(url); // Get www2, www3 etc.
+
+        if (testName == null || testName.isEmpty()) {
+            testName = result.getMethod().getMethodName(); // fallback
+        }
+
+        ExtentTest test = getReporter().createTest(testName); // set readable name
         test.assignCategory(result.getMethod().getGroups());
         test.info("🟢 Test started at: " + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
-        setTest(test);
+
+        setTest(test); // ThreadLocal for ExtentTest
     }
+
+    private String extractServerFromUrl(String url) {
+        if (url == null || url.isEmpty()) return "unknown";
+        try {
+            URL parsedUrl = new URL(url);
+            String host = parsedUrl.getHost(); // www2.faronicsbeta.com
+            if (host.contains("www")) {
+                return host.substring(0, host.indexOf('.')); // returns "www2"
+            }
+            return host; // fallback
+        } catch (Exception e) {
+            return "unknown";
+        }
+    }
+
 
     @Override
     public void onTestSuccess(ITestResult result) {
@@ -199,13 +229,13 @@ public class ExtentReportManager implements ITestListener {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
             message.setSubject("📦 Automation Report ZIP - DeepFreeze");
 
-            BodyPart messageBodyPart = new MimeBodyPart();
+            MimeBodyPart messageBodyPart = new MimeBodyPart();
             messageBodyPart.setText("Hi,\n\nPlease find the attached ZIP of the automation report.\n\nRegards,\nAutomation Team");
 
             MimeBodyPart attachmentPart = new MimeBodyPart();
             attachmentPart.attachFile(new File(zipFilePath));
 
-            Multipart multipart = new MimeMultipart();
+            MimeMultipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
             multipart.addBodyPart(attachmentPart);
 

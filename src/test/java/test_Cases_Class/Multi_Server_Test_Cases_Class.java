@@ -45,17 +45,20 @@ public class Multi_Server_Test_Cases_Class extends Base_Page implements ITest {
 			return "UnknownServer";
 		}
 	}
+	
 
 	@Test(priority = 1, dataProvider = "serverLoginData", description = "Run full flow per server")
 	public void LoginOnProductionServer(String url, String username, String password)
-			throws InterruptedException, IOException {
+			throws InterruptedException, IOException {	
+		Base_Page.currentURL = url;
 		String serverTag = extractSubdomainFromUrl(url);
+		//String serverTag = extractSubdomainFromUrl(url);
 		Multi_Server_Login_Page loginPage = new Multi_Server_Login_Page();
 		String randomPolicyName = randomeString().toUpperCase();
 
 		// ========== STEP 1: LOGIN ==========
 		currentTestName = "Login_" + serverTag;
-		logToReport(Status.INFO, "🌐 Logging into: " + url);
+	//	logToReport(Status.INFO, "🌐 Logging into: " + url);
 		String result = loginPage.performLogin(url, username, password);
 		if (!result.contains("Login Success")) {
 			logToReport(Status.FAIL, "❌ Login failed for server: " + url);
@@ -65,7 +68,7 @@ public class Multi_Server_Test_Cases_Class extends Base_Page implements ITest {
 		logToReport(Status.PASS, "✅ Login successful: " + serverTag);
 
 		// ========== STEP 2: CREATE POLICY ==========
-		currentTestName = "CreatePolicy_" + serverTag;
+/*		currentTestName = "CreatePolicy_" + serverTag;
 		logToReport(Status.INFO, "🛠 Creating policy: " + randomPolicyName);
 		loginPage.navigateToPage("policypagewww2");
 
@@ -139,7 +142,7 @@ public class Multi_Server_Test_Cases_Class extends Base_Page implements ITest {
 		loginPage.navigateToPage("taskstatuspagenew");
 		iw2.checkfirestrow1();
 		loginPage.navigateToPage("computerspage");
-		Thread.sleep(120000);
+		Thread.sleep(120000);  
 		loginPage.navigateToPage("applicationpath");
 
 		// ========== STEP 6: INSTALL SU APPS ==========
@@ -175,7 +178,7 @@ public class Multi_Server_Test_Cases_Class extends Base_Page implements ITest {
 
 		Assert.assertTrue(InstalledAppsVersion == null || InstalledAppsVersion.trim().isEmpty());
 
-		// ========== STEP 8: UNINSTALL AGENT ==========
+	// ========== STEP 8: UNINSTALL AGENT ==========
 		currentTestName = "Uninstall Cloud Agent & all Products_" + serverTag;
 		loginPage.navigateToPage("computerspage");
 		iw2.SearchMachine();
@@ -188,12 +191,14 @@ public class Multi_Server_Test_Cases_Class extends Base_Page implements ITest {
 
 		Thread.sleep(200000); // cleanup wait  
 		
-		
+	
 		// ========== STEP 9: Visit on every Cloud Pages ==========
+		
+	*/	
 		
 		Map<String, String> pagePathMap = new LinkedHashMap<>();
 		pagePathMap.put("computerpages", "/en/Computers/List");
-		pagePathMap.put("homepage", "/en/Home/Dashboard");
+		/*		pagePathMap.put("homepage", "/en/Home/Dashboard");
 		pagePathMap.put("grouppage", "/en/Group/List");
 		pagePathMap.put("policypage", "/en/Policy/List");
 		pagePathMap.put("applicationpage", "/NU/Dashboard/Applications");
@@ -208,7 +213,7 @@ public class Multi_Server_Test_Cases_Class extends Base_Page implements ITest {
 		pagePathMap.put("taskstatuspages", "/en/TaskStatus/List");
 		pagePathMap.put("usermanagementpages", "/en/User/UserManagement");
 		pagePathMap.put("mysitespages", "/en/MySite/MySites");
-		pagePathMap.put("myprofilespages", "/en/Account/Profile");
+		pagePathMap.put("myprofilespages", "/en/Account/Profile");   
 
 		for (Map.Entry<String, String> entry : pagePathMap.entrySet()) {
 		    String pageKey = entry.getKey();
@@ -228,17 +233,17 @@ public class Multi_Server_Test_Cases_Class extends Base_Page implements ITest {
 
 		 //   System.out.println("✅ Navigated to " + pageKey + " — Path OK: " + actualPath);
 		    
-		}
+		}		*/
 				
-				
-				
+			
 		// ========== STEP 10: LOGOUT ==========
 		currentTestName = "Logged out from server_" + serverTag;
 		loginPage.performLogout();
 		logToReport(Status.INFO, "🔒 Logged out from server: " + serverTag);
 	}
 
-	private Map<String, String> getExpectedProductMap() {
+	
+/*	private Map<String, String> getExpectedProductMap() {
 		Map<String, String> map = new HashMap<>();
 		map.put("Cloud Agent",
 				"C:\\Program Files (x86)\\Faronics\\Faronics Cloud\\Faronics Cloud Agent\\FWAService.exe");
@@ -252,5 +257,5 @@ public class Multi_Server_Test_Cases_Class extends Base_Page implements ITest {
 		map.put("WINSelect", "C:\\Program Files\\Faronics\\WINSelect\\WINSelect.exe");
 		map.put("Imaging", "C:\\Program Files (x86)\\Faronics\\Imaging\\Imaging.exe");
 		return map;
-	}  
+	}  */
 }

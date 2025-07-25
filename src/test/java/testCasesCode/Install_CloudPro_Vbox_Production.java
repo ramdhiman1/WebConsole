@@ -25,7 +25,7 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 		wait = new WebDriverWait(driver.get(), Duration.ofSeconds(15));
 	}
 
-	String remoteHost = "192.168.30.115";
+	String remoteHost = "192.168.30.187";
 	String remoteMachineName = "DESKTOP-VO6FI92";
 	String vmUser = "Administrator";
 	String vmPassword = "aloha";
@@ -240,6 +240,7 @@ public class Install_CloudPro_Vbox_Production extends Base_Page {
 	}
 
 	// Now check Machine is Online / offline
+	
 
 /*	public void selectOnlineWorkstation() throws InterruptedException {
 		int retryCount = 0;

@@ -1,13 +1,37 @@
 package reporting;
 
 import base_Classes.Base_Page;
+import jakarta.activation.DataHandler;
+import jakarta.activation.FileDataSource;
+import jakarta.mail.Address;
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+import jakarta.mail.Multipart;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.Multipart;
+
+
 import org.testng.*;
 import org.testng.xml.XmlSuite;
 
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.mail.*;
-import javax.mail.internet.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
@@ -227,7 +251,7 @@ public class CustomReportListener implements IReporter, ITestListener {
             message.setRecipients(Message.RecipientType.TO, toAddresses);
             message.setSubject("✅ Automation Report - Deep Freeze Cloud ");
 
-            BodyPart textPart = new MimeBodyPart();
+            MimeBodyPart textPart = new MimeBodyPart();
             textPart.setText("Hello,\n\nPlease find attached the latest automation test report.\n\nRegards,\nQA Team");
 
             MimeBodyPart attachmentPart = new MimeBodyPart();

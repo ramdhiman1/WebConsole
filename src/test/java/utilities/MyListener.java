@@ -18,7 +18,7 @@ public class MyListener implements ITestListener {
 
         // Initialize ExtentReports and PatchDeploymentReport
         ExtentReportManager.getReporter();
-        PatchDeploymentReport.getReporter();
+       
     }
 
     @Override
@@ -29,8 +29,7 @@ public class MyListener implements ITestListener {
         // Create ExtentTest and PatchDeployment test instance
         ExtentTest test = ExtentReportManager.getReporter().createTest(testName);
         ExtentReportManager.setTest(test);
-        PatchDeploymentReport.getReporter(); // Optional: Add test-level tracking if needed
-
+      
         ExtentReportManager.log(Status.INFO, "🧪 Test Started: " + testName);
     }
 
@@ -39,7 +38,7 @@ public class MyListener implements ITestListener {
         String testName = result.getMethod().getMethodName();
         System.out.println("✅ Test Passed: " + testName);
 
-        PatchDeploymentReport.getReporter(); // Optional: If logging success/final summary
+      
 
         ExtentReportManager.log(Status.PASS, "✅ Test Passed: " + testName);
     }
@@ -52,7 +51,7 @@ public class MyListener implements ITestListener {
         System.out.println("❌ Test Failed: " + testName);
         System.out.println("   ↳ Reason: " + errorMessage);
 
-        PatchDeploymentReport.getReporter(); // Optional: If capturing screenshot path or HTML block
+       
 
         ExtentReportManager.log(Status.FAIL, "❌ Test Failed: " + testName);
         ExtentReportManager.log(Status.FAIL, "📌 Exception: " + errorMessage);
@@ -63,7 +62,7 @@ public class MyListener implements ITestListener {
         String testName = result.getMethod().getMethodName();
         System.out.println("⚠️ Test Skipped: " + testName);
 
-        PatchDeploymentReport.getReporter(); // Optional for skipped tests logging
+       
 
         ExtentReportManager.log(Status.SKIP, "⚠️ Test Skipped: " + testName);
     }
@@ -73,7 +72,7 @@ public class MyListener implements ITestListener {
         String msg = "🏁 Test Execution Completed for Suite: " + context.getSuite().getName();
         System.out.println(msg);
 
-        PatchDeploymentReport.getReporter(); // Optional: Generate summary or flush data
+   
 
         ExtentReportManager.log(Status.INFO, msg);
         ExtentReportManager.flushReport(); // Final flush of report

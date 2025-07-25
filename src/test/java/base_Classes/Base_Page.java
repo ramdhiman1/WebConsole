@@ -13,6 +13,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +41,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Allure;
@@ -59,8 +62,9 @@ import java.net.URL;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class Base_Page {
+	public static String currentURL = ""; // ✅ ADD THIS
 	private static ThreadLocal<List<String>> testStepLogs = ThreadLocal.withInitial(ArrayList::new);
-
+	public static Map<String, StringBuilder> testLogs = new HashMap<>();
 	protected static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 	protected static ExtentReports extent;
     protected static ExtentTest extentTest;
@@ -75,7 +79,7 @@ public class Base_Page {
 	LocalDateTime now;
 	DateTimeFormatter formatter;
 	String formattedDateTime;
-
+	
 	@BeforeTest
 	
 	@Epic("EP001")
@@ -228,6 +232,7 @@ public class Base_Page {
 			ScreenRecorderUtil.startRecord(br); // Start screen recording
 
 		}
+		
 
 	}
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="3" passed="0" failed="3" skipped="0">
+<testng-results ignored="0" total="3" passed="2" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-07-23T11:33:21 IST" name="DFCloudSuite" finished-at="2025-07-23T11:36:32 IST" duration-ms="191099">
+  <suite started-at="2025-07-25T20:07:03 IST" name="DFCloudSuite" finished-at="2025-07-25T20:07:55 IST" duration-ms="52423">
     <groups>
     </groups>
-    <test started-at="2025-07-23T11:33:21 IST" name="chrome" finished-at="2025-07-23T11:36:32 IST" duration-ms="191099">
+    <test started-at="2025-07-25T20:07:03 IST" name="chrome" finished-at="2025-07-25T20:07:55 IST" duration-ms="52423">
       <class name="test_Cases_Class.Multi_Server_Test_Cases_Class">
-        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@2d35442b]" started-at="2025-07-23T11:33:21 IST" name="setup" test-instance-name="CreatePolicy_www9" finished-at="2025-07-23T11:33:35 IST" duration-ms="13244" status="PASS">
+        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@1fc793c2]" started-at="2025-07-25T20:07:03 IST" name="setup" test-instance-name="Logged out from server_www5" finished-at="2025-07-25T20:07:04 IST" duration-ms="1707" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -23,7 +23,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setup -->
-        <test-method signature="runServerFlow(java.lang.String,java.lang.String,java.lang.String)[pri:1, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@2d35442b]" started-at="2025-07-23T11:33:35 IST" name="runServerFlow" description="Run full flow per server" data-provider="serverLoginData" test-instance-name="CreatePolicy_www9" finished-at="2025-07-23T11:34:19 IST" duration-ms="43735" status="FAIL">
+        <test-method signature="LoginOnProductionServer(java.lang.String,java.lang.String,java.lang.String)[pri:1, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@1fc793c2]" started-at="2025-07-25T20:07:05 IST" name="LoginOnProductionServer" description="Run full flow per server" data-provider="serverLoginData" test-instance-name="Logged out from server_www5" finished-at="2025-07-25T20:07:48 IST" duration-ms="43586" status="FAIL">
           <params>
             <param index="0">
               <value>
@@ -32,23 +32,23 @@
             </param>
             <param index="1">
               <value>
-                <![CDATA[sachins@alohatechnology.com22]]>
+                <![CDATA[sachins@alohatechnology.com43]]>
               </value>
             </param>
             <param index="2">
               <value>
-                <![CDATA[Aloha@1232]]>
+                <![CDATA[Aloha@12333]]>
               </value>
             </param>
           </params>
           <exception class="java.lang.AssertionError">
             <message>
-              <![CDATA[Login failed for: https://www3.deepfreeze.com/en/Account/Login?nr=1]]>
+              <![CDATA[❌ Server is down or unreachable & Login failed for: https://www3.deepfreeze.com/en/Account/Login?nr=1]]>
             </message>
             <full-stacktrace>
-              <![CDATA[java.lang.AssertionError: Login failed for: https://www3.deepfreeze.com/en/Account/Login?nr=1
+              <![CDATA[java.lang.AssertionError: ❌ Server is down or unreachable & Login failed for: https://www3.deepfreeze.com/en/Account/Login?nr=1
 at org.testng.Assert.fail(Assert.java:111)
-at test_Cases_Class.Multi_Server_Test_Cases_Class.runServerFlow(Multi_Server_Test_Cases_Class.java:61)
+at test_Cases_Class.Multi_Server_Test_Cases_Class.LoginOnProductionServer(Multi_Server_Test_Cases_Class.java:65)
 at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
@@ -80,191 +80,50 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
           </exception> <!-- java.lang.AssertionError -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- runServerFlow -->
-        <test-method signature="runServerFlow(java.lang.String,java.lang.String,java.lang.String)[pri:1, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@2d35442b]" started-at="2025-07-23T11:34:19 IST" name="runServerFlow" description="Run full flow per server" data-provider="serverLoginData" test-instance-name="CreatePolicy_www9" finished-at="2025-07-23T11:35:15 IST" duration-ms="56148" status="FAIL">
+        </test-method> <!-- LoginOnProductionServer -->
+        <test-method signature="LoginOnProductionServer(java.lang.String,java.lang.String,java.lang.String)[pri:1, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@1fc793c2]" started-at="2025-07-25T20:07:49 IST" name="LoginOnProductionServer" description="Run full flow per server" data-provider="serverLoginData" test-instance-name="Logged out from server_www5" finished-at="2025-07-25T20:07:52 IST" duration-ms="3372" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[https://www2.deepfreeze.com/en/Account/Login?nr=1]]>
+                <![CDATA[https://www2.faronicsbeta.com/en/Account/Login?nr=1]]>
               </value>
             </param>
             <param index="1">
               <value>
-                <![CDATA[skadam@faronics.com]]>
+                <![CDATA[dhiman2@dhiman2.com]]>
               </value>
             </param>
             <param index="2">
               <value>
-                <![CDATA[aloha@123]]>
+                <![CDATA[Aloha@123]]>
               </value>
             </param>
           </params>
-          <exception class="org.openqa.selenium.NoSuchElementException">
-            <message>
-              <![CDATA[no such element: Unable to locate element: {"method":"xpath","selector":"//select[@id='ddPolicySettingsDeepFreeze']"}
-  (Session info: chrome=138.0.7204.158)
-For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
-Build info: version: '4.34.0', revision: '707dcb4246*'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.7'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [a37aeb3ae08448ed7bb2e754d6618d91, findElement {value=//select[@id='ddPolicySettingsDeepFreeze'], using=xpath}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.158, chrome: {chromedriverVersion: 138.0.7204.168 (3e8d82e86e9..., userDataDir: C:\Windows\SystemTemp\scope...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:57679}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:57679/devtoo..., se:cdpVersion: 138.0.7204.158, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: a37aeb3ae08448ed7bb2e754d6618d91]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {"method":"xpath","selector":"//select[@id='ddPolicySettingsDeepFreeze']"}
-  (Session info: chrome=138.0.7204.158)
-For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
-Build info: version: '4.34.0', revision: '707dcb4246*'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.7'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [a37aeb3ae08448ed7bb2e754d6618d91, findElement {value=//select[@id='ddPolicySettingsDeepFreeze'], using=xpath}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.158, chrome: {chromedriverVersion: 138.0.7204.168 (3e8d82e86e9..., userDataDir: C:\Windows\SystemTemp\scope...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:57679}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:57679/devtoo..., se:cdpVersion: 138.0.7204.158, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: a37aeb3ae08448ed7bb2e754d6618d91
-at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
-at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
-at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
-at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:167)
-at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:138)
-at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
-at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:215)
-at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:216)
-at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:174)
-at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:544)
-at org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:165)
-at org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:59)
-at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:367)
-at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:361)
-at org.openqa.selenium.support.pagefactory.DefaultElementLocator.findElement(DefaultElementLocator.java:68)
-at org.openqa.selenium.support.pagefactory.internal.LocatingElementHandler.invoke(LocatingElementHandler.java:38)
-at jdk.proxy2/jdk.proxy2.$Proxy43.getTagName(Unknown Source)
-at org.openqa.selenium.support.ui.Select.<init>(Select.java:41)
-at testCasesCode.Policies_Page_ProductionServer.ClickonDropdwonDF(Policies_Page_ProductionServer.java:89)
-at test_Cases_Class.Multi_Server_Test_Cases_Class.runServerFlow(Multi_Server_Test_Cases_Class.java:76)
-at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
-at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:664)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:227)
-at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
-at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:957)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:200)
-at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
-at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
-at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-at org.testng.TestRunner.privateRun(TestRunner.java:848)
-at org.testng.TestRunner.run(TestRunner.java:621)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:443)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:437)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:397)
-at org.testng.SuiteRunner.run(SuiteRunner.java:336)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1280)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1200)
-at org.testng.TestNG.runSuites(TestNG.java:1114)
-at org.testng.TestNG.run(TestNG.java:1082)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.NoSuchElementException -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- runServerFlow -->
-        <test-method signature="runServerFlow(java.lang.String,java.lang.String,java.lang.String)[pri:1, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@2d35442b]" started-at="2025-07-23T11:35:16 IST" name="runServerFlow" description="Run full flow per server" data-provider="serverLoginData" test-instance-name="CreatePolicy_www9" finished-at="2025-07-23T11:36:32 IST" duration-ms="75988" status="FAIL">
+        </test-method> <!-- LoginOnProductionServer -->
+        <test-method signature="LoginOnProductionServer(java.lang.String,java.lang.String,java.lang.String)[pri:1, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@1fc793c2]" started-at="2025-07-25T20:07:52 IST" name="LoginOnProductionServer" description="Run full flow per server" data-provider="serverLoginData" test-instance-name="Logged out from server_www5" finished-at="2025-07-25T20:07:55 IST" duration-ms="2763" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[https://www9.deepfreeze.com/en/Account/Login?nr=1]]>
+                <![CDATA[https://www5.faronicsbeta.com/en/Account/Login?nr=1]]>
               </value>
             </param>
             <param index="1">
               <value>
-                <![CDATA[floristic@mail.ru]]>
+                <![CDATA[dhiman5@dhiman5.com]]>
               </value>
             </param>
             <param index="2">
               <value>
-                <![CDATA[Frank168]]>
+                <![CDATA[Aloha@123]]>
               </value>
             </param>
           </params>
-          <exception class="org.openqa.selenium.TimeoutException">
-            <message>
-              <![CDATA[Expected condition failed: waiting for visibility of Proxy element for: DefaultElementLocator 'By.xpath: //a[@id='P1']' (tried for 35 second(s) with 500 milliseconds interval)]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.TimeoutException: Expected condition failed: waiting for visibility of Proxy element for: DefaultElementLocator 'By.xpath: //a[@id='P1']' (tried for 35 second(s) with 500 milliseconds interval)
-at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
-at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
-at testCasesCode.Policies_Page_ProductionServer.selectDropdownPolicy(Policies_Page_ProductionServer.java:48)
-at test_Cases_Class.Multi_Server_Test_Cases_Class.runServerFlow(Multi_Server_Test_Cases_Class.java:73)
-at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
-at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:664)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:227)
-at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
-at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:957)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:200)
-at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
-at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
-at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-at org.testng.TestRunner.privateRun(TestRunner.java:848)
-at org.testng.TestRunner.run(TestRunner.java:621)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:443)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:437)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:397)
-at org.testng.SuiteRunner.run(SuiteRunner.java:336)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1280)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1200)
-at org.testng.TestNG.runSuites(TestNG.java:1114)
-at org.testng.TestNG.run(TestNG.java:1082)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
-Caused by: org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {"method":"xpath","selector":"//a[@id='P1']"}
-  (Session info: chrome=138.0.7204.158)
-For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
-Build info: version: '4.34.0', revision: '707dcb4246*'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.7'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [a37aeb3ae08448ed7bb2e754d6618d91, findElement {value=//a[@id='P1'], using=xpath}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 138.0.7204.158, chrome: {chromedriverVersion: 138.0.7204.168 (3e8d82e86e9..., userDataDir: C:\Windows\SystemTemp\scope...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:57679}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:57679/devtoo..., se:cdpVersion: 138.0.7204.158, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: a37aeb3ae08448ed7bb2e754d6618d91
-at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
-at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
-at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
-at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:167)
-at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:138)
-at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
-at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:215)
-at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:216)
-at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:174)
-at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:544)
-at org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:165)
-at org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:59)
-at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:367)
-at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:361)
-at org.openqa.selenium.support.pagefactory.DefaultElementLocator.findElement(DefaultElementLocator.java:68)
-at org.openqa.selenium.support.pagefactory.internal.LocatingElementHandler.invoke(LocatingElementHandler.java:38)
-at jdk.proxy2/jdk.proxy2.$Proxy43.isDisplayed(Unknown Source)
-at org.openqa.selenium.support.ui.ExpectedConditions.elementIfVisible(ExpectedConditions.java:304)
-at org.openqa.selenium.support.ui.ExpectedConditions$10.apply(ExpectedConditions.java:290)
-at org.openqa.selenium.support.ui.ExpectedConditions$10.apply(ExpectedConditions.java:287)
-at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:203)
-... 28 more
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.TimeoutException -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- runServerFlow -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@2d35442b]" started-at="2025-07-23T11:36:32 IST" name="tearDown" test-instance-name="CreatePolicy_www9" finished-at="2025-07-23T11:36:32 IST" duration-ms="379" status="PASS">
+        </test-method> <!-- LoginOnProductionServer -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:test_Cases_Class.Multi_Server_Test_Cases_Class@1fc793c2]" started-at="2025-07-25T20:07:55 IST" name="tearDown" test-instance-name="Logged out from server_www5" finished-at="2025-07-25T20:07:55 IST" duration-ms="199" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
