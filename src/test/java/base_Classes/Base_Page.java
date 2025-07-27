@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -68,6 +69,16 @@ public class Base_Page {
 	protected static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 	protected static ExtentReports extent;
     protected static ExtentTest extentTest;
+ // 🔥 For custom matrix-style HTML report
+  
+    public static Map<String, Map<String, String>> testMatrix = new LinkedHashMap<>();
+
+    public synchronized void logMatrixResult(String testCaseName, String serverTag, String status) {
+        testMatrix.putIfAbsent(testCaseName, new LinkedHashMap<>());
+        testMatrix.get(testCaseName).put(serverTag, status);
+    }
+
+
 	public static ThreadLocal<String> driverName = new ThreadLocal<>();  // ✅ Add this
 //	public static WebDriver driver; // WebDriver instance
 	public Logger logger; // Logger instance
@@ -237,21 +248,24 @@ public class Base_Page {
 	}
 
 	@AfterTest
-	@Step("Teardown WebDriver")
-	public void tearDown() {
+	@Step("Teardown WebDriver and Generate Matrix Report")
+	public void tearDownAndGenerateReport() {
+	    try {
+	        // ✅ Quit WebDriver
+	        if (driver != null && driver.get() != null) {
+	            driver.get().quit();
+	            logger.info("WebDriver closed successfully.");
+	            driver.remove(); // Clean up ThreadLocal instance
+	            ScreenRecorderUtil.stopRecord();
+	        }
 
-		try {
-			if (driver != null) {
-
-				//captureScreen("TestName", resultsDirectory);
-				driver.get().quit();
-				logger.info("WebDriver closed successfully.");
-				driver.remove(); // Clean up ThreadLocal instance
-				ScreenRecorderUtil.stopRecord();
-			}
-		} catch (Exception e) {
-			logger.error("Error during WebDriver teardown: " + e.getMessage());
-		}
+	        // ✅ Generate custom matrix report
+	        utilities.CustomHtmlReportGenerator.generate(testMatrix);
+	        System.out.println("✅ Matrix report generated successfully.");
+	        
+	    } catch (Exception e) {
+	        logger.error("❌ Error during teardown or report generation: " + e.getMessage());
+	    }
 	}
 
 	public static WebDriver getDriver() {
@@ -373,7 +387,7 @@ public class Base_Page {
 	
 	//////////////////////////////////////////////////
 
-	public List<String[]> readExcelData(String filePath, String sheetName) {
+	public static List<String[]> readExcelData(String filePath, String sheetName) {
 	    List<String[]> dataList = new ArrayList<>();
 
 	    try (FileInputStream fis = new FileInputStream(filePath);

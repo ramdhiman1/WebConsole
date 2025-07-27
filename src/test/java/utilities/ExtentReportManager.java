@@ -209,7 +209,7 @@ public class ExtentReportManager implements ITestListener {
     private void sendEmailWithZip(String zipFilePath) {
         final String fromEmail = "sonu2010dhiman@gmail.com"; // ✅ Replace
         final String password = "gycw idcf fuyv cglp";       // ✅ Use app password
-        final String toEmail = "ramdhiman222@gmail.com";     // ✅ Replace
+        final String toEmail = "ramdhiman2222@gmail.com";     // ✅ Replace
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");

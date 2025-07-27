@@ -309,7 +309,7 @@ public class PatchDeploymentReport extends Base_Page implements ISuiteListener, 
     private void sendEmailWithInlineAndAttachment(String htmlContent, File zipAttachment) {
         final String from = "sonu2010dhiman@gmail.com";
         final String password = "abug mdog vxxw kcim"; // App password
-        final String to = "ramdhiman222@gmail.com,sachinss@alohatechnology.com";
+        final String to = "ramdhiman2223@gmail.com,sachinss@alohatechnology.com";
         final String subject = "✅ Automation Report - Deep Freeze Cloud";
 
         Properties props = new Properties();
